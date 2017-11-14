@@ -3,6 +3,9 @@ Avalon is a log bot for irc.
 ## Configuration
 You can find Avalon config file at `config` folder. Edit it for your own customize.
 
+### Multi-Tables Support
+After you set `db_multi` to `True`, Avalon would save messages into different dbs `<base name>:<year>-<month>` according to current time. Make sure you grant correct privileges to db user.
+
 ## Use Directly
 Avalon uses [irc](https://github.com/jaraco/irc) and [pymongo](https://github.com/mongodb/mongo-python-driver), so you have to install these two libraries before run the script:
 
