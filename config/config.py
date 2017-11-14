@@ -6,6 +6,7 @@ irc_port = 6667
 
 # config for mongodb
 db_name = 'test'
+db_multi = False
 db_server = 'localhost'
 db_port = 27017
 db_auth = True

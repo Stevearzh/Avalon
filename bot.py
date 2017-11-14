@@ -8,28 +8,49 @@ from config import config
 
 class Avalon(irc.bot.SingleServerIRCBot):
     def __init__(self, channel_list, nickname, irc_server, irc_port,
-        db_name, db_server, db_port, db_auth, db_user, db_pwd):
+        db_name, db_multi, db_server, db_port, db_auth, db_user, db_pwd):
 
-        irc.bot.SingleServerIRCBot.__init__(self, [(irc_server, irc_port)], nickname, nickname)        
-        self.channel_list = channel_list        
-        if not db_auth:
-            self.db = pymongo.MongoClient(db.server, db.port)[db_name]
+        irc.bot.SingleServerIRCBot.__init__(self, [(irc_server, irc_port)], nickname, nickname)
+
+        self.channel_list = channel_list
+        self.db_name = db_name
+        self.db_multi = db_multi
+        self.db_server = db_server
+        self.db_port = db_port
+        self.db_auth = db_auth
+        self.db_user = db_user
+        self.db_pwd = db_pwd
+
+        # use single table in mongodb
+        self.db = self.access_db(db_server, db_port, db_name, db_name, db_auth, db_user, db_pwd)
+
+    def access_db(self, server, port, name, table, auth, user, pwd):
+        if not auth:
+            return pymongo.MongoClient('mongodb://%s:%s/%s' %
+                (server, port, name))[table]
         else:
-            self.db = pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
-                (db_user, db_pwd, db_server, db_port, db_name))[db_name]
-        
+            return pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
+                (user, pwd, server, port, name))[table]
+
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
 
     def on_welcome(self, c, e):
-        for channel in self.channel_list:            
+        for channel in self.channel_list:
             c.join(channel)
 
-    def on_privmsg(self, c, e):        
+    def on_privmsg(self, c, e):
         c.privmsg(e.source.split('!')[0], 'Sorry, this bot is for log only.')
 
     def on_pubmsg(self, c, e):
-        now = time.localtime()        
+        now = time.localtime()
+
+        # use multi tables in mongodb
+        if self.db_multi:
+            self.db = self.access_db(self.db_server, self.db_port, self.db_name,
+                '%s:%d-%d' % (self.db_name, now.tm_year, now.tm_mon),
+                self.db_auth, self.db_user, self.db_pwd)
+
         self.db.my_collection.insert_one({
             'channel': e.target,
             'date': '%s-%s-%s' % (now.tm_year, now.tm_mon, now.tm_mday),
@@ -40,6 +61,6 @@ class Avalon(irc.bot.SingleServerIRCBot):
 
 if __name__ == '__main__':
     bot = Avalon(config.channel_list, config.nickname, config.irc_server,
-        config.irc_port, config.db_name, config.db_server, config.db_port,
-        config.db_auth, config.db_user, config.db_pwd)
+        config.irc_port, config.db_name, config.db_multi, config.db_server,
+        config.db_port, config.db_auth, config.db_user, config.db_pwd)
     bot.start()
