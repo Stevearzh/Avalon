@@ -26,6 +26,8 @@ class Avalon(irc.bot.SingleServerIRCBot):
         # set timezone
         if time_zone:
             os.environ['TZ'] = time_zone
+            # Actually set TZ
+            time.tzset()
 
         # use single table in mongodb
         self.db = self.access_db(db_server, db_port, db_name, db_name, db_auth, db_user, db_pwd)
