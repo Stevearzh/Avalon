@@ -12,3 +12,4 @@ db_port = 27017
 db_auth = True
 db_user = 'testUser'
 db_pwd = 'P@ssword!'
+time_zone = 'Asia/Shanghai'

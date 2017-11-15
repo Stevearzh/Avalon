@@ -3,12 +3,14 @@
 import irc.bot
 import pymongo
 import time
+import os
 
 from config import config
 
 class Avalon(irc.bot.SingleServerIRCBot):
-    def __init__(self, channel_list, nickname, irc_server, irc_port,
-        db_name, db_multi, db_server, db_port, db_auth, db_user, db_pwd):
+    def __init__(self, channel_list, nickname, irc_server, irc_port, db_name,
+        db_multi=False, db_server='localhost', db_port=27017, db_auth=False,
+        db_user='', db_pwd='', time_zone=False):
 
         irc.bot.SingleServerIRCBot.__init__(self, [(irc_server, irc_port)], nickname, nickname)
 
@@ -20,6 +22,10 @@ class Avalon(irc.bot.SingleServerIRCBot):
         self.db_auth = db_auth
         self.db_user = db_user
         self.db_pwd = db_pwd
+
+        # set timezone
+        if time_zone:
+            os.environ['TZ'] = time_zone
 
         # use single table in mongodb
         self.db = self.access_db(db_server, db_port, db_name, db_name, db_auth, db_user, db_pwd)
@@ -62,5 +68,5 @@ class Avalon(irc.bot.SingleServerIRCBot):
 if __name__ == '__main__':
     bot = Avalon(config.channel_list, config.nickname, config.irc_server,
         config.irc_port, config.db_name, config.db_multi, config.db_server,
-        config.db_port, config.db_auth, config.db_user, config.db_pwd)
+        config.db_port, config.db_auth, config.db_user, config.db_pwd, config.time_zone)
     bot.start()
