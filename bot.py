@@ -5,7 +5,16 @@ import pymongo
 import time
 import os
 
+from jaraco.stream import buffer
 from config import config
+
+# Ignore all input that cannot be decoded
+# https://pypi.python.org/pypi/irc
+class IgnoreErrorsBuffer(buffer.DecodingLineBuffer):
+    def handle_exception(self):
+        pass
+
+irc.client.ServerConnection.buffer_class = IgnoreErrorsBuffer
 
 class Avalon(irc.bot.SingleServerIRCBot):
     def __init__(self, channel_list, nickname, irc_server, irc_port, db_name,
@@ -26,6 +35,8 @@ class Avalon(irc.bot.SingleServerIRCBot):
         # set timezone
         if time_zone:
             os.environ['TZ'] = time_zone
+            # Actually set TZ
+            time.tzset()
 
         # use single table in mongodb
         self.db = self.access_db(db_server, db_port, db_name, db_name, db_auth, db_user, db_pwd)
