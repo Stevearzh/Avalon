@@ -1,12 +1,9 @@
-#!/usr/bin/env python3
-
 import irc.bot
 import pymongo
 import time
 import os
 
 from jaraco.stream import buffer
-from config import config
 
 # Ignore all input that cannot be decoded
 # https://pypi.python.org/pypi/irc
@@ -16,7 +13,7 @@ class IgnoreErrorsBuffer(buffer.DecodingLineBuffer):
 
 irc.client.ServerConnection.buffer_class = IgnoreErrorsBuffer
 
-class Avalon(irc.bot.SingleServerIRCBot):
+class Logbot(irc.bot.SingleServerIRCBot):
     def __init__(self, channel_list, nickname, irc_server, irc_port, db_name,
         db_multi=False, db_server='localhost', db_port=27017, db_auth=False,
         db_user='', db_pwd='', time_zone=False):
@@ -75,9 +72,3 @@ class Avalon(irc.bot.SingleServerIRCBot):
             'nick': e.source.split('!')[0],
             'message': e.arguments[0]
         })
-
-if __name__ == '__main__':
-    bot = Avalon(config.channel_list, config.nickname, config.irc_server,
-        config.irc_port, config.db_name, config.db_multi, config.db_server,
-        config.db_port, config.db_auth, config.db_user, config.db_pwd, config.time_zone)
-    bot.start()

@@ -6,25 +6,27 @@ You can find Avalon config file at `config` folder. Edit it for your own customi
 ### Multi-Tables Support
 After you set `db_multi` to `True`, Avalon would save messages into different dbs `<base name>:<year>-<month>` according to current time. Make sure you grant correct privileges to db user.
 
-## Use Directly
+## Logbot
+
+### Use Directly
 Avalon uses [irc](https://github.com/jaraco/irc) and [pymongo](https://github.com/mongodb/mongo-python-driver), so you have to install these two libraries before run the script:
 
 ```
-pip install -r requirements.txt
+pip install -r bot/requirements.txt
 ```
 
 finally, run script:
 
 ```
-./bot.py
+./run_bot.py
 ```
 
 
-## Use Through Docker
+### Use Through Docker
 This is the recommendable way for running Avalon. You have to build the image at first:
 
 ```
-docker build -t avalon .
+docker build -f bot/Dockerfile -t avalon .
 ```
 
 after building success, you can just run Avalon image right away:
@@ -34,6 +36,10 @@ docker run --name=avalon -d -v $(pwd)/config:/avalon/config -p <whaterver port>:
 ```
 
 that's all.
+
+## Server
+
+TBD
 
 ## About Avalon
 
