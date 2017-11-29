@@ -13,3 +13,8 @@ db_auth = True
 db_user = 'testUser'
 db_pwd = 'P@ssword!'
 time_zone = 'Asia/Shanghai'
+
+# server config
+showed_channels = ['#channel1']
+server_port = 5556
+earliest_db = (2017, 11)
