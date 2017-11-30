@@ -1,10 +1,10 @@
-# config for bot
+# bot config
 channel_list = ['#channel1', '#channel2']
 nickname = 'nick_name'
 irc_server = 'irc.freenode.net'
 irc_port = 6667
 
-# config for mongodb
+# mongodb config
 db_name = 'test'
 db_multi = False
 db_server = 'localhost'

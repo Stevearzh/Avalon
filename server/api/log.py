@@ -71,21 +71,17 @@ def LogHandler(config):
                     db = access_db(config.db_server, config.db_port, config.db_name,
                         config.db_name, config.db_auth, config.db_user, config.db_pwd)
 
-                if offset and limit:
-                    db_logs = db.my_collection.find({
-                        'channel': channel,
-                        'date': '%s-%s-%s' % (year, month, day)
-                    })
+                db_logs = db.my_collection.find({
+                    'channel': channel,
+                    'date': '%s-%s-%s' % (year, month, day)
+                })
+                total = db_logs.count()
 
-                    logs = fetch_logs(db_logs.skip(int(offset)).limit(int(limit)))
-                    total = db_logs.count()
+                # pagination
+                if offset and limit:
+                    logs = fetch_logs(db_logs.skip(int(offset)).limit(int(limit)))                    
                 else:
-                    db_logs = db.my_collection.find({
-                        'channel': channel,
-                        'date': '%s-%s-%s' % (year, month, day)
-                    })
                     logs = fetch_logs(db_logs)
-                    total = db_logs.count()
 
             self.write(json_encode({
                 'data': {
