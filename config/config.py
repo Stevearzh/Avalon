@@ -1,3 +1,5 @@
+import os
+
 # bot config
 channel_list = ['#channel1', '#channel2']
 nickname = 'nick_name'
@@ -18,3 +20,9 @@ time_zone = 'Asia/Shanghai'
 showed_channels = ['#channel1']
 server_port = 5556
 earliest_db = (2017, 11)
+public_root = os.path.join(os.path.dirname(__file__), '../server/public')
+server_settings = dict(
+    debug=True,
+    static_path=public_root,
+    template_path=public_root
+)

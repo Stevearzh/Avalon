@@ -1,8 +1,7 @@
-import os
-import time
 import pymongo
 import tornado.web
 from tornado.escape import json_encode
+
 from .times import gen_time_list
 
 def first_child(arr):

@@ -24,12 +24,12 @@ def gen_time_list(config):
     return list
 
 def TimesHandler(config):
-    result = {
-        'list': gen_time_list(config)
-    }
-
-    class TimesClass(tornado.web.RequestHandler):
+    class TimesClass(tornado.web.RequestHandler):                
         def get(self):
+            result = {
+                'list': gen_time_list(config)
+            }
+            
             self.write(json_encode({
                 'data': result
             }))
