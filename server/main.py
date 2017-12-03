@@ -9,7 +9,7 @@ def make_app(config):
         (r'/api/channels', ChannelHandler(config.showed_channels)),
         (r'/api/times', TimesHandler(config)),
         (r'/api/log', LogHandler(config)),
-        (r'/(.*)', tornado.web.StaticFileHandler, {
+        (r'^/(?!api/)(.*)$', tornado.web.StaticFileHandler, {
         	'path': config.public_root,
         	'default_filename': 'index.html'
         })
