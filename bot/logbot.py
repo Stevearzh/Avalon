@@ -1,26 +1,18 @@
-import irc.bot
+import pydle
 import pymongo
 import time
 import os
 
-from jaraco.stream import buffer
+class Logbot(pydle.Client):
+    def __init__(self, channel_list, nickname, irc_server, irc_port, 
+        db_name, db_multi=False, db_server='localhost', db_port=27017,
+        db_auth=False, db_user='', db_pwd='', time_zone=False):
 
-# Ignore all input that cannot be decoded
-# https://pypi.python.org/pypi/irc
-class IgnoreErrorsBuffer(buffer.DecodingLineBuffer):
-    def handle_exception(self):
-        pass
-
-irc.client.ServerConnection.buffer_class = IgnoreErrorsBuffer
-
-class Logbot(irc.bot.SingleServerIRCBot):
-    def __init__(self, channel_list, nickname, irc_server, irc_port, db_name,
-        db_multi=False, db_server='localhost', db_port=27017, db_auth=False,
-        db_user='', db_pwd='', time_zone=False):
-
-        irc.bot.SingleServerIRCBot.__init__(self, [(irc_server, irc_port)], nickname, nickname)
+        pydle.Client.__init__(self, nickname)
+        pydle.Client.connect(self, irc_server, irc_port)
 
         self.channel_list = channel_list
+        self.nickname = nickname
         self.db_name = db_name
         self.db_multi = db_multi
         self.db_server = db_server
@@ -46,17 +38,11 @@ class Logbot(irc.bot.SingleServerIRCBot):
             return pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
                 (user, pwd, server, port, name))[table]
 
-    def on_nicknameinuse(self, c, e):
-        c.nick(c.get_nickname() + "_")
-
-    def on_welcome(self, c, e):
+    def on_connect(self):
         for channel in self.channel_list:
-            c.join(channel)
+            self.join(channel)
 
-    def on_privmsg(self, c, e):
-        c.privmsg(e.source.split('!')[0], 'Sorry, this bot is for log only.')
-
-    def on_pubmsg(self, c, e):
+    def on_message(self, source, target, message):
         now = time.localtime()
 
         # use multi tables in mongodb
@@ -65,10 +51,14 @@ class Logbot(irc.bot.SingleServerIRCBot):
                 '%s:%d-%d' % (self.db_name, now.tm_year, now.tm_mon),
                 self.db_auth, self.db_user, self.db_pwd)
 
-        self.db.my_collection.insert_one({
-            'channel': e.target,
-            'date': '%s-%s-%s' % (now.tm_year, now.tm_mon, now.tm_mday),
-            'time': '%s:%s:%s' % (now.tm_hour, now.tm_min, now.tm_sec),
-            'nick': e.source.split('!')[0],
-            'message': e.arguments[0]
-        })
+        # make sure it's not a privmsg
+        if source != self.nickname:
+            self.db.my_collection.insert_one({
+                'channel': source,
+                'date': '%s-%s-%s' % (now.tm_year, now.tm_mon, now.tm_mday),
+                'time': '%s:%s:%s' % (now.tm_hour, now.tm_min, now.tm_sec),
+                'nick': target,
+                'message': message
+            })
+        else:
+            self.message(target, 'Sorry, this bot is for log only.')
