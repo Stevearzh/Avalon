@@ -37,8 +37,8 @@ def LogHandler(config):
             total = 0
 
             # get pagination
-            offset = first_child(self.get_arguments('offset', True))
-            limit = first_child(self.get_arguments('limit', True))
+            offset = first_child(self.get_arguments('offset', True)) or '0'
+            limit = first_child(self.get_arguments('limit', True)) or '20'
 
             # get date
             year = first_child(self.get_arguments('year', True))
