@@ -16,11 +16,21 @@
   version "8.0.53"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
 
+"@types/query-string@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.0.1.tgz#6cb41c724cb1644d56c2d1dae7c7b204e706b39e"
+
 "@types/react-dom@^16.0.3":
   version "16.0.3"
   resolved "http://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.0.3.tgz#8accad7eabdab4cca3e1a56f5ccb57de2da0ff64"
   dependencies:
     "@types/node" "*"
+    "@types/react" "*"
+
+"@types/react-paginate@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@types/react-paginate/-/react-paginate-4.3.1.tgz#04c558a67751c38c24160df8f812f6b57600081a"
+  dependencies:
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^16.0.25":
@@ -1280,6 +1290,10 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/decamelize/download/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+decode-uri-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+
 deep-equal@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/deep-equal/download/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
@@ -1834,7 +1848,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.1, fbjs@^0.8.16:
+fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4:
   version "0.8.16"
   resolved "http://registry.npm.taobao.org/fbjs/download/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -3492,6 +3506,12 @@ material-ui-icons@^1.0.0-beta.17:
   dependencies:
     recompose "^0.26.0"
 
+material-ui-pagination@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/material-ui-pagination/-/material-ui-pagination-1.1.6.tgz#f7990fefd5afaf5eca1c066b2766c3e7e9794d6c"
+  dependencies:
+    prop-types "^15.5.9"
+
 material-ui-pickers@^1.0.0-beta.7:
   version "1.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/material-ui-pickers/-/material-ui-pickers-1.0.0-beta.7.tgz#8a094c84858877dc2646856bdd43935c0b3f5376"
@@ -3499,9 +3519,9 @@ material-ui-pickers@^1.0.0-beta.7:
     babel-helpers "^6.24.1"
     moment-range "^3.0.3"
 
-material-ui@^1.0.0-beta.22:
-  version "1.0.0-beta.22"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.22.tgz#04e719f33230ec9eab2dd1361b44509f3ec4d98b"
+material-ui@^1.0.0-beta.23:
+  version "1.0.0-beta.23"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.23.tgz#f3d49359c13b57f893e768de62b81f5e8ad7faa5"
   dependencies:
     babel-runtime "^6.26.0"
     brcast "^3.0.1"
@@ -4566,7 +4586,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -4627,6 +4647,14 @@ query-string@^4.1.0:
   version "4.3.4"
   resolved "http://registry.npm.taobao.org/query-string/download/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
   dependencies:
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
+query-string@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.1.tgz#6e2b86fe0e08aef682ecbe86e85834765402bd88"
+  dependencies:
+    decode-uri-component "^0.2.0"
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
@@ -4694,6 +4722,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-create-fragment@^15.0.0:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-create-fragment/-/react-addons-create-fragment-15.6.2.tgz#a394de7c2c7becd6b5475ba1b97ac472ce7c74f8"
+  dependencies:
+    fbjs "^0.8.4"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.0"
+
 react-dev-utils@^4.0.1:
   version "4.2.1"
   resolved "http://registry.npm.taobao.org/react-dev-utils/download/react-dev-utils-4.2.1.tgz#9f2763e7bafa1a1b9c52254d2a479deec280f111"
@@ -4753,6 +4789,14 @@ react-jss@^8.1.0:
     prop-types "^15.6.0"
     theming "^1.2.1"
 
+react-paginate@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-5.0.0.tgz#b5c12191ea81adc6d4d1b339b805e81841eaa8ea"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+    react-addons-create-fragment "^15.0.0"
+
 react-popper@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.4.tgz#8649d539837e7c6f47bc9b24c9cf57a404e199a1"
@@ -4778,6 +4822,19 @@ react-transition-group@^2.2.1:
     loose-envify "^1.3.1"
     prop-types "^15.5.8"
     warning "^3.0.0"
+
+react-ultimate-pagination-material-ui@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-ultimate-pagination-material-ui/-/react-ultimate-pagination-material-ui-1.0.3.tgz#c0ab453516175909e8ee4410b86454ddf0c8dee4"
+  dependencies:
+    react-ultimate-pagination "1.0.2"
+
+react-ultimate-pagination@1.0.2, react-ultimate-pagination@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-ultimate-pagination/-/react-ultimate-pagination-1.0.2.tgz#d63237dfb75d92cb016c0e47e4c639707f933ac1"
+  dependencies:
+    prop-types "^15.0.0"
+    ultimate-pagination "1.0.0"
 
 react@^16.2.0:
   version "16.2.0"
@@ -5884,6 +5941,10 @@ uglifyjs-webpack-plugin@^0.4.6:
 uid-number@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/uid-number/download/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
+
+ultimate-pagination@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ultimate-pagination/-/ultimate-pagination-1.0.0.tgz#1f9f5465678d7410159d5a172c2013465e9bd85f"
 
 uniq@^1.0.1:
   version "1.0.1"

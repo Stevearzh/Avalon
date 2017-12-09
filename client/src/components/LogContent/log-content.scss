@@ -1,0 +1,40 @@
+.log-content {
+  padding-bottom: 80px;
+  .content-card {
+    width: 90%;
+    margin: 40px auto;
+    min-width: 800px;
+    min-height: 600px;
+  }
+
+  .log-list {
+    list-style: none;
+    text-align: left;
+    color: #434343;
+
+    li {
+      display: flex;
+      align-items: stretch;
+
+      .time {
+        display: inline-block;        
+        font-family: monospace;
+        line-height: 2.5em;
+        margin-right: 1em;
+        font-size: 14px;
+      }
+
+      .nick {
+        font-weight: 500;
+      }
+
+      p {
+        flex: 1;
+        margin: 0;
+        line-height: 2em;
+        padding-left: 1em;
+        border-left: 1px solid #999;
+      }
+    }
+  }
+}
