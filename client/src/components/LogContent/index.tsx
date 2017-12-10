@@ -26,6 +26,8 @@ interface State {
   logs: Log[];
 }
 
+const doubleIntDigit = (digit: string): string => Number(digit) < 10 ? `0${digit}` : `${digit}`;
+
 class LogContent extends React.Component<Props, State> {
   state = {
     limit: PAGE_SIZE,
@@ -73,18 +75,20 @@ class LogContent extends React.Component<Props, State> {
           <CardContent>            
             <ul className="log-list">
               {
-                this.state.logs.map((log: Log, i: number): JSX.Element => (
-                  <li key={i}>
-                    <span className="time">
-                      {moment(`${this.props.selectedDate.format('YYYY-MM-DD')} ${log.time}`)
-                      .format('HH:mm:ss')}
-                    </span>
-                    <p className="message">
-                      <span className="nick">{log.nick}: </span>
-                      {log.message}
-                    </p>
-                  </li>
-                ))
+                this.state.logs.map((log: Log, i: number): JSX.Element => {
+                  const [hour, minute, second] = log.time.split(':');
+                  return (
+                    <li key={i}>
+                      <span className="time">
+                        {`${doubleIntDigit(hour)}:${doubleIntDigit(minute)}:${doubleIntDigit(second)}`}
+                      </span>
+                      <p className="message">
+                        <span className="nick">{log.nick}: </span>
+                        {log.message}
+                      </p>
+                    </li>
+                  );
+                })
               }
             </ul>
           </CardContent>          
