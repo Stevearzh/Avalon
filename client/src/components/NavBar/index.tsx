@@ -11,12 +11,15 @@ import { DatePicker } from 'material-ui-pickers/src';
 
 import './style.scss';
 
-interface Props {}
+interface Props {
+  selectedDate: moment.Moment;
+  selectedChannel: string;
+  onDateChange: Function;
+  onChannelChange: Function;  
+}
 
 interface State {
   channels: string[];
-  selectedChannel: string;
-  selectedDate: moment.Moment;
   minDate: string;
   availableDate: string[];
 }
@@ -24,8 +27,6 @@ interface State {
 class NavBar extends React.Component<Props, State> {
   state = {
     channels: [],
-    selectedChannel: '',
-    selectedDate: moment(),
     minDate: '1900-1-1',
     availableDate: []
   };
@@ -34,8 +35,8 @@ class NavBar extends React.Component<Props, State> {
     fetch('/api/channels')
       .then((res: Response) => res.json())
       .then(json => this.setState({ channels: json.data.list }))
-      .then(() => this.setState({ selectedChannel: this.state.channels[0] }))
-      .catch(error => null);
+      .then(() => this.props.onChannelChange(this.state.channels[0]))
+      .catch((error: {}) => null);
 
     fetch('/api/times')
       .then((res: Response) => res.json())
@@ -44,13 +45,11 @@ class NavBar extends React.Component<Props, State> {
       .catch(error => null);
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {    
-    this.setState({ selectedChannel: event.target.value });
-  }
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
+    this.props.onChannelChange(event.target.value)
 
-  handleDateChange = (date: moment.Moment): void => {
-    this.setState({ selectedDate: date });    
-  }
+  handleDateChange = (date: moment.Moment): void =>
+    this.props.onDateChange(date)
 
   handleDateDismiss = (event: React.MouseEvent<HTMLElement>): void => undefined;
 
@@ -70,11 +69,10 @@ class NavBar extends React.Component<Props, State> {
                 Channel:
               </InputLabel>
               <Select
-                value={this.state.selectedChannel}              
+                value={this.props.selectedChannel}              
                 input={<Input name="channel" id="channel-simple" />}
                 onChange={this.handleChange}
-                className="select-bar"
-                color="white"
+                className="select-bar"                
               >
                 {
                   this.state.channels.map((channel: string, i: number) => (
@@ -88,10 +86,10 @@ class NavBar extends React.Component<Props, State> {
                 <div className="picker-label">Date:</div>
                 <DatePicker
                   className="picker"
-                  value={this.state.selectedDate}
+                  value={this.props.selectedDate}
                   onChange={this.handleDateChange}
                   disableFuture={true}
-                  minDate={this.state.minDate}
+                  minDate={this.state.minDate}       
                 />
               </div>
             </div>
