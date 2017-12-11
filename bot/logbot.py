@@ -3,6 +3,8 @@ import pymongo
 import time
 import os
 
+pydle.Client.RECONNECT_MAX_ATTEMPTS = None
+
 class Logbot(pydle.Client):
     def __init__(self, channel_list, nickname, irc_server, irc_port, 
         db_name, db_multi=False, db_server='localhost', db_port=27017,
