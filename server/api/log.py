@@ -1,3 +1,4 @@
+import re
 import pymongo
 import tornado.web
 from tornado.escape import json_encode
@@ -22,11 +23,14 @@ def access_db(server, port, name, table, auth, user, pwd):
         return pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
             (user, pwd, server, port, name))[table]
 
+def strip_irc_chars(string):
+    return re.sub(R"\x03(?:\d{1,2}(?:,\d{1,2})?)?|\u000F", "", string)
+
 def fetch_logs(source):
     return list(map(lambda log: ({
         'time': log['time'],
         'nick': log['nick'],
-        'message': log['message']
+        'message': strip_irc_chars(log['message'])
     }), source))
 
 def LogHandler(config):	
