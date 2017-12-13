@@ -1,9 +1,7 @@
-.log-content {
-  padding-bottom: 80px;
+.log-content {  
   .content-card {
     width: 90%;
-    margin: 40px auto;
-    min-width: 800px;
+    margin: 0 auto 40px;    
     min-height: 600px;
   }
 
@@ -11,6 +9,7 @@
     list-style: none;
     text-align: left;
     color: #434343;
+    padding: 0 20px;
 
     li {
       display: flex;
@@ -25,7 +24,7 @@
       }
 
       .nick {
-        font-weight: 500;
+        font-weight: 700;
       }
 
       p {
@@ -34,6 +33,7 @@
         line-height: 2em;
         padding-left: 1em;
         border-left: 1px solid #999;
+        font-weight: 300;
       }
     }
   }
