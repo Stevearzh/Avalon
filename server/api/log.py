@@ -24,7 +24,7 @@ def access_db(server, port, name, table, auth, user, pwd):
             (user, pwd, server, port, name))[table]
 
 def strip_irc_chars(string):
-    return re.sub(R"\x03(?:\d{1,2}(?:,\d{1,2})?)?|\u000F", "", string)
+    return re.sub(R"\x03(?:\d{1,2}(?:,\d{1,2})?)?|\x02|\x1F|\x1D|\x06|\x16|\u000F", "", string)
 
 def fetch_logs(source):
     return list(map(lambda log: ({
