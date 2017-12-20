@@ -21,6 +21,7 @@ showed_channels = ['#channel1']
 server_port = 5556
 earliest_db = (2017, 11)
 public_root = os.path.join(os.path.dirname(__file__), '../server/public')
+dist_path = os.path.join(public_root, 'dist')
 server_settings = dict(
     debug=True,
     static_path=public_root,
