@@ -89,7 +89,8 @@ class NavBar extends React.Component<Props, State> {
                   value={this.props.selectedDate}
                   onChange={this.handleDateChange}
                   disableFuture={true}
-                  minDate={this.state.minDate}       
+                  minDate={this.state.minDate}
+                  InputProps={null}
                 />
               </div>
             </div>

@@ -5,7 +5,10 @@
   "dependencies": {
     "@types/moment": "^2.13.0",
     "@types/query-string": "^5.0.1",
-    "@types/react-paginate": "^4.3.1",
+    "@types/react-redux": "^5.0.14",
+    "@types/react-router-dom": "^4.2.3",
+    "@types/react-router-redux": "^5.0.10",
+    "@types/redux-actions": "^2.2.3",
     "autoprefixer": "7.1.2",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
@@ -18,7 +21,6 @@
     "jest": "20.0.4",
     "material-ui": "^1.0.0-beta.23",
     "material-ui-icons": "^1.0.0-beta.17",
-    "material-ui-pagination": "^1.1.6",
     "material-ui-pickers": "^1.0.0-beta.7",
     "moment": "^2.19.3",
     "node-sass": "^4.7.2",
@@ -30,9 +32,14 @@
     "react": "^16.2.0",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^16.2.0",
-    "react-paginate": "^5.0.0",
-    "react-ultimate-pagination": "^1.0.2",
-    "react-ultimate-pagination-material-ui": "^1.0.3",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.18.2",
@@ -52,7 +59,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "dev": "NODE_ENV=development ./node_modules/.bin/webpack --config config/webpack.config.dev.js --progress --color -w"
   },
   "devDependencies": {
     "@types/jest": "^21.1.8",

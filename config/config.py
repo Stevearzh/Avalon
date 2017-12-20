@@ -20,6 +20,8 @@ time_zone = 'Asia/Shanghai'
 showed_channels = ['#channel1']
 server_port = 5556
 earliest_db = (2017, 11)
+# change public_root to '../client/build'
+# if you're under client development
 public_root = os.path.join(os.path.dirname(__file__), '../server/public')
 dist_path = os.path.join(public_root, 'dist')
 server_settings = dict(

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import NavBar from './components/NavBar';
-import LogContent from './components/LogContent';
-
-import './App.css';
+import NavBar from '@src/components/NavBar';
+import LogContent from '@src/components/LogContent';
 
 interface Props {}
 
@@ -27,7 +25,7 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="App">
+      <div className="page home-page">
         <NavBar
           onDateChange={this.handleDateChange}
           onChannelChange={this.handleChannelChange}
