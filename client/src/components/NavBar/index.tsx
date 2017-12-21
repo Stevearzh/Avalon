@@ -26,7 +26,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  select: typeof actionCreators.select;
+  selectChannel: typeof actionCreators.selectChannel;
 }
 
 interface State {
@@ -40,7 +40,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
-  bindActionCreators({ select: actionCreators.select }, dispatch);
+  bindActionCreators({ selectChannel: actionCreators.selectChannel }, dispatch);
 
 class NavBar extends React.Component<Props & StateProps & DispatchProps, State> {
   state = {
@@ -58,7 +58,7 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps, State> 
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.props.select(event.target.value)
+    this.props.selectChannel(event.target.value)
 
   handleDateChange = (date: moment.Moment): void =>
     this.props.onDateChange(date)

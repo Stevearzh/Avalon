@@ -20,7 +20,7 @@ interface State {}
 
 const mapStateToProps = (state: RootState): StateProps => ({});
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => 
   bindActionCreators({ fetchList: actionCreators.fetchList }, dispatch);
 
 class Router extends React.Component<Props & StateProps & DispatchProps, State> {

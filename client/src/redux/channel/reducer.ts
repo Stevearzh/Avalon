@@ -1,7 +1,8 @@
 import { handleActions, Action } from 'redux-actions';
 import {
   Payload, State,
-  REQUEST_LIST, RECEIVE_LIST, INVALID_LIST, SELECT_CHANNEL  
+  REQUEST_LIST, RECEIVE_LIST,
+  INVALID_LIST, SELECT_CHANNEL
 } from './';
 
 const defaultState: State = {
