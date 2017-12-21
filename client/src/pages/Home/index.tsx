@@ -7,33 +7,25 @@ import LogContent from '@src/components/LogContent';
 interface Props {}
 
 interface State {
-  selectedDate: moment.Moment;
-  selectedChannel: string;
+  selectedDate: moment.Moment;  
 }
 
 class App extends React.Component<Props, State> {
   state = {
-    selectedDate: moment(),
-    selectedChannel: ''
+    selectedDate: moment()    
   };
 
   handleDateChange = (newDate: moment.Moment): void =>
     this.setState({ selectedDate: newDate }) 
-
-  handleChannelChange = (newChannel: string): void =>
-    this.setState({ selectedChannel: newChannel })
 
   render() {
     return (
       <div className="page home-page">
         <NavBar
           onDateChange={this.handleDateChange}
-          onChannelChange={this.handleChannelChange}
-          selectedChannel={this.state.selectedChannel}
           selectedDate={this.state.selectedDate}
         />
-        <LogContent
-          selectedChannel={this.state.selectedChannel}
+        <LogContent          
           selectedDate={this.state.selectedDate}
         />
       </div>

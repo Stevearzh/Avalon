@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { RootState, Dispatch } from '@src/redux';
+import { actionCreators } from '@src/redux/channel';
 
 import Home from './Home';
 
@@ -11,16 +12,22 @@ interface Props extends RouteComponentProps<{}> {}
 
 interface StateProps {}
 
-interface DispatchProps {}
+interface DispatchProps {
+  fetchList: typeof actionCreators.fetchList;
+}
 
 interface State {}
 
 const mapStateToProps = (state: RootState): StateProps => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
-  bindActionCreators({}, dispatch);
+  bindActionCreators({ fetchList: actionCreators.fetchList }, dispatch);
 
 class Router extends React.Component<Props & StateProps & DispatchProps, State> {
+  async componentDidMount () {
+    await this.props.fetchList();    
+  }
+
   render() {
     return (
       <div className="App">        
