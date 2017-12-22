@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as moment from 'moment';
 import * as queryString from 'query-string';
 import Card, { CardContent } from 'material-ui/Card';
+import { LinearProgress } from 'material-ui/Progress';
+import { animateScroll as scroll } from 'react-scroll';
 
 import { cleanChannel } from '@src/utils';
 
@@ -26,6 +28,7 @@ interface State {
   offset: number;
   total: number;
   logs: Log[];
+  loading: boolean;
 }
 
 const doubleIntDigit = (digit: string): string => Number(digit) < 10 ? `0${digit}` : `${digit}`;
@@ -35,7 +38,8 @@ class LogContent extends React.Component<Props, State> {
     limit: PAGE_SIZE,
     offset: 0,
     total: 0,
-    logs: []
+    logs: [],
+    loading: true
   };
 
   async componentWillReceiveProps (nextProps: Props) {    
@@ -50,10 +54,17 @@ class LogContent extends React.Component<Props, State> {
   getDate = (date: moment.Moment): string => date.format('YYYY-MM-DD');  
 
   fetchLogs = (channel: string, date: string, limit: number, offset: number): Promise<void> => {
-    const [year, month, day] = date.split('-');
+    const [year, month, day] = date.split('-');    
+    this.setState({ loading: true });
     return fetch(`/api/irc-logs?${queryString.stringify({ year, month, day: Number(day), channel, limit, offset })}`)
       .then((res: Response) => res.json())
-      .then(json => {        
+      .then(json => {
+        this.setState({ loading: false });
+        scroll.scrollToTop({
+          duration: 800,
+          delay: 0,
+          smooth: 'easeInOutQuart'
+        });
         if (!json.message) {
           const { logs, total } = json.data;
           this.setState({ logs, total });
@@ -85,6 +96,12 @@ class LogContent extends React.Component<Props, State> {
                 })
               }
             </ul>
+            {
+              this.state.loading &&
+              <div className="loading-panel">
+                <LinearProgress className="progress-bar"/>
+              </div>
+            }
           </CardContent>          
         </Card>
         <Pagination
