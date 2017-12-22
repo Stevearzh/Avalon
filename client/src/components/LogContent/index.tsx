@@ -2,9 +2,8 @@ import * as React from 'react';
 import * as moment from 'moment';
 import * as queryString from 'query-string';
 import Card, { CardContent } from 'material-ui/Card';
-import { connect } from 'react-redux';
 
-import { RootState } from '@src/redux';
+import { cleanChannel } from '@src/utils';
 
 import Pagination from '../Pagination';
 import './log-content.scss';
@@ -17,9 +16,7 @@ type Log = {
   message: string;
 };
 
-interface Props {}
-
-interface StateProps {
+interface Props {
   channel: string;
   time: moment.Moment;
 }
@@ -31,14 +28,9 @@ interface State {
   logs: Log[];
 }
 
-const mapStateToProps = (state: RootState): StateProps => ({
-  channel: state.channel.choosen,
-  time: state.time.choosen
-});
-
 const doubleIntDigit = (digit: string): string => Number(digit) < 10 ? `0${digit}` : `${digit}`;
 
-class LogContent extends React.Component<Props & StateProps, State> {
+class LogContent extends React.Component<Props, State> {
   state = {
     limit: PAGE_SIZE,
     offset: 0,
@@ -46,8 +38,8 @@ class LogContent extends React.Component<Props & StateProps, State> {
     logs: []
   };
 
-  async componentWillReceiveProps (nextProps: Props & StateProps) {    
-    const channel = this.getChannel(nextProps.channel);
+  async componentWillReceiveProps (nextProps: Props) {    
+    const channel = cleanChannel(nextProps.channel);
     const date = this.getDate(nextProps.time);
     const offset = 0;
     const { limit } = this.state;      
@@ -55,12 +47,7 @@ class LogContent extends React.Component<Props & StateProps, State> {
     this.fetchLogs(channel, date, limit, offset);    
   }
 
-  getDate = (date: moment.Moment): string => date.format('YYYY-MM-DD');
-
-  getChannel = (channel: string): string => {
-    const tmp = channel.split('#');
-    return tmp[tmp.length - 1];
-  }
+  getDate = (date: moment.Moment): string => date.format('YYYY-MM-DD');  
 
   fetchLogs = (channel: string, date: string, limit: number, offset: number): Promise<void> => {
     const [year, month, day] = date.split('-');
@@ -106,7 +93,7 @@ class LogContent extends React.Component<Props & StateProps, State> {
           onChange={async (page: number) => {
             const { limit } = this.state;
             const offset = (page - 1) * limit;              
-            const channel = this.getChannel(this.props.channel);
+            const channel = cleanChannel(this.props.channel);
             const date = this.getDate(this.props.time);
 
             await this.setState({ offset });
@@ -118,4 +105,4 @@ class LogContent extends React.Component<Props & StateProps, State> {
   }
 }
 
-export default connect(mapStateToProps)(LogContent);
+export default LogContent;
