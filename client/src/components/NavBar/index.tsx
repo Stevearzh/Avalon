@@ -12,39 +12,44 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { RootState, Dispatch } from '@src/redux';
-import { actionCreators, State as Channel } from '@src/redux/channel';
+import { actionCreators as channelActionCreators, State as Channel } from '@src/redux/channel';
+import { actionCreators as timeActionCreators } from '@src/redux/time';
 
 import './style.scss';
 
-interface Props {
-  selectedDate: moment.Moment;  
-  onDateChange: Function;  
-}
+interface Props {}
 
 interface StateProps {
   channel: Channel;
+  time: moment.Moment;
 }
 
 interface DispatchProps {
-  selectChannel: typeof actionCreators.selectChannel;
+  selectChannel: typeof channelActionCreators.selectChannel;
+  selectTime: typeof timeActionCreators.selectTime;
 }
 
-interface State {
-  channels: string[];
+interface State {  
   minDate: string;
   availableDate: string[];
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  channel: state.channel
+  channel: state.channel,
+  time: state.time.choosen
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
-  bindActionCreators({ selectChannel: actionCreators.selectChannel }, dispatch);
+  bindActionCreators(
+    {
+      selectChannel: channelActionCreators.selectChannel,
+      selectTime: timeActionCreators.changeTime
+    },
+    dispatch
+  );
 
 class NavBar extends React.Component<Props & StateProps & DispatchProps, State> {
   state = {
-    channels: [],
     minDate: '1900-1-1',
     availableDate: []
   };
@@ -60,8 +65,8 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps, State> 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.props.selectChannel(event.target.value)
 
-  handleDateChange = (date: moment.Moment): void =>
-    this.props.onDateChange(date)
+  handleDateChange = (date: moment.Moment) =>
+    this.props.selectTime(date)
 
   handleDateDismiss = (event: React.MouseEvent<HTMLElement>): void => undefined;
 
@@ -98,7 +103,7 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps, State> 
                 <div className="picker-label">Date:</div>
                 <DatePicker
                   className="picker"
-                  value={this.props.selectedDate}
+                  value={this.props.time}
                   onChange={this.handleDateChange}
                   disableFuture={true}
                   minDate={this.state.minDate}

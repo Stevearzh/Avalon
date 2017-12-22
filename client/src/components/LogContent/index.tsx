@@ -5,7 +5,6 @@ import Card, { CardContent } from 'material-ui/Card';
 import { connect } from 'react-redux';
 
 import { RootState } from '@src/redux';
-import { State as Channel } from '@src/redux/channel';
 
 import Pagination from '../Pagination';
 import './log-content.scss';
@@ -18,12 +17,11 @@ type Log = {
   message: string;
 };
 
-interface Props {
-  selectedDate: moment.Moment;  
-}
+interface Props {}
 
 interface StateProps {
-  channel: Channel;
+  channel: string;
+  time: moment.Moment;
 }
 
 interface State {
@@ -34,7 +32,8 @@ interface State {
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  channel: state.channel
+  channel: state.channel.choosen,
+  time: state.time.choosen
 });
 
 const doubleIntDigit = (digit: string): string => Number(digit) < 10 ? `0${digit}` : `${digit}`;
@@ -48,8 +47,8 @@ class LogContent extends React.Component<Props & StateProps, State> {
   };
 
   async componentWillReceiveProps (nextProps: Props & StateProps) {    
-    const channel = this.getChannel(nextProps.channel.choosen);
-    const date = this.getDate(nextProps.selectedDate);
+    const channel = this.getChannel(nextProps.channel);
+    const date = this.getDate(nextProps.time);
     const offset = 0;
     const { limit } = this.state;      
     await this.setState({ offset });      
@@ -107,8 +106,8 @@ class LogContent extends React.Component<Props & StateProps, State> {
           onChange={async (page: number) => {
             const { limit } = this.state;
             const offset = (page - 1) * limit;              
-            const channel = this.getChannel(this.props.channel.choosen);
-            const date = this.getDate(this.props.selectedDate);
+            const channel = this.getChannel(this.props.channel);
+            const date = this.getDate(this.props.time);
 
             await this.setState({ offset });
             await this.fetchLogs(channel, date, limit, offset);
