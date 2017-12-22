@@ -5,17 +5,17 @@ export type Selected = string;
 export type Error = string;
 
 export interface Payload {
-  readonly list?: string[];
-  readonly reason?: string;
+  readonly list?: List;
+  readonly reason?: Error;
   readonly receivedAt?: number;
-  readonly selected?: string;
+  readonly selected?: Selected;
 }
 
 export interface State {
-  readonly list: string[];
+  readonly list: List;
   readonly isFetching: boolean;
   readonly didInvalid: boolean;
   readonly lastUpdate: number;
-  readonly error?: string;
-  readonly choosen: string;
+  readonly error?: Error;
+  readonly choosen: Selected;
 }
