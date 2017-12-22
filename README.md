@@ -104,8 +104,6 @@ after image build, run:
 sudo docker run --name=avalon-server -d -v $(pwd)/config:/avalon/config -p <server port>:<server port> avalon-server
 ```
 
-visit [http://localhost:<server port>/](http://localhost:<server port>/) to see the page.
-
 
 ## About Avalon
 
