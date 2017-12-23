@@ -1,12 +1,8 @@
-import re
-import pymongo
 import tornado.web
 from tornado.escape import json_encode
 
 from .times import gen_time_list
-
-def first_child(arr):
-    return arr[0] if arr else None
+from ..utils import strip_irc_chars, first_child, access_db
 
 def dict_channels(channels):
     return dict(zip(map(lambda c: list(filter(lambda n: n != '',
@@ -14,17 +10,6 @@ def dict_channels(channels):
 
 def check_date(avail_list, year, month):
     return '%s-%s' % (year, month) in avail_list
-
-def access_db(server, port, name, table, auth, user, pwd):
-    if not auth:
-        return pymongo.MongoClient('mongodb://%s:%s/%s' %
-            (server, port, name))[table]
-    else:
-        return pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
-            (user, pwd, server, port, name))[table]
-
-def strip_irc_chars(string):
-    return re.sub(R"\x03(?:\d{1,2}(?:,\d{1,2})?)?|\x02|\x1F|\x1D|\x06|\x16|\u000F", "", string)
 
 def fetch_logs(source):
     return list(map(lambda log: ({
@@ -66,13 +51,9 @@ def LogHandler(config):
             # query logs
             if year and month and day and valid_date and channel:
                 # initial database
-                if config.db_multi:
-                    db = access_db(config.db_server, config.db_port, config.db_name,
+                db = access_db(config.db_server, config.db_port, config.db_name,
                         '%s:%s-%s' % (config.db_name, year, month),
-                        config.db_auth, config.db_user, config.db_pwd)
-                else:
-                    db = access_db(config.db_server, config.db_port, config.db_name,
-                        config.db_name, config.db_auth, config.db_user, config.db_pwd)
+                        config.db_user, config.db_pwd)
 
                 db_logs = db.my_collection.find({
                     'channel': channel,
