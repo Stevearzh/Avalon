@@ -12,7 +12,7 @@ def last_week_data(channel, server, port, name, user, pwd):
         result = host.append(pandas.DataFrame(nd), ignore_index=True)
         return result
 
-    days_list = last_seven_days()
+    days_list = last_week()
 
     d0 = days_list[0]
     init_df = pandas.DataFrame(list(date_db(d0.year, d0.month, d0.day)))

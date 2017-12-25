@@ -22,4 +22,4 @@ def last_seven_days(day):
     return list(map(lambda i: day - DT.timedelta(days=i), range(7)))
 
 def last_week():
-    return prev_seven_days(prev_sunday(DT.datetime.today()))
+    return last_seven_days(prev_sunday(DT.datetime.today()))
