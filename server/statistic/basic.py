@@ -7,7 +7,7 @@ from ..utils import access_db, last_week, strip_irc_chars
 # close "A value is trying to be set on a copy of a slice from a DataFrame." warning
 pandas.options.mode.chained_assignment = None
 
-def last_week_data(channel, server, port, name, user, pwd):
+def last_week_data(channel, server, port, name, user, pwd, mask_dict=None):
     def date_db(year, month, day):
         db = access_db(server, port, name, '%s:%s-%s' % (name, year, month), user, pwd)
         return db.my_collection.find({ 'date': '%s-%s-%s' % (year, month, day), 'channel': channel })
@@ -36,6 +36,10 @@ def last_week_data(channel, server, port, name, user, pwd):
     # write data back
     df['nick'].update(tdf['nick'])
     df['message'].update(tdf['message'])
+
+    # replace mask to real nick
+    if mask_dict:
+        df['nick'] = df['nick'].map(lambda nick: mask_dict[nick] if nick in mask_dict else nick)
     
     return df[['channel', 'date', 'time', 'nick', 'message']]    
 
