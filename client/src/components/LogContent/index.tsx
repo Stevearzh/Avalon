@@ -55,8 +55,13 @@ class LogContent extends React.Component<Props, State> {
 
   fetchLogs = (channel: string, date: string, limit: number, offset: number): Promise<void> => {
     const [year, month, day] = date.split('-');    
-    this.setState({ loading: true });
-    return fetch(`/api/irc-logs?${queryString.stringify({ year, month, day: Number(day), channel, limit, offset })}`)
+    this.setState({ loading: true });    
+    return fetch(`/api/irc-logs?${queryString.stringify({
+      year,
+      month: Number(month),
+      day: Number(day),
+      channel, limit, offset
+    })}`)
       .then((res: Response) => res.json())
       .then(json => {
         this.setState({ loading: false });
