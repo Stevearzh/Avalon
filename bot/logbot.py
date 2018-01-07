@@ -3,7 +3,7 @@ import pymongo
 import time
 import os
 
-pydle.Client.RECONNECT_MAX_ATTEMPTS = float('inf')
+pydle.Client.RECONNECT_MAX_ATTEMPTS = 1000
 
 class Logbot(pydle.Client):
     def __init__(self, channel_list, nickname, irc_server, irc_port, 
