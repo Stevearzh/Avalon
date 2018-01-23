@@ -1,24 +1,56 @@
-package main
+package logbot
 
 import (
-	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 
 	irc "github.com/fluffle/goirc/client"
 )
 
-var host *string = flag.String("host", "irc.freenode.net:8000", "IRC server")
-var channel *string = flag.String("channel", "#linuxba", "IRC channel")
+// LogBot is the log bot type
+type Bot struct{}
 
-func main() {
-	flag.Parse()
+// yaml type
+type config struct {
+	Logbot struct {
+		Nick     string   `yaml:"nick"`
+		User     string   `yaml:"user"`
+		Server   string   `yaml:"server"`
+		Channels []string `yaml:"channels"`
+	}
+}
+
+func (c *config) getConf(path string) *config {
+	yamlFile, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Printf("yamlFile.Get err   #%v ", err)
+	}
+	err = yaml.Unmarshal(yamlFile, c)
+	if err != nil {
+		log.Fatalf("Unmarshal: %v", err)
+	}
+
+	return c
+}
+
+// Run method init and run the log bot
+func (bot *Bot) Run(confPath string) {
+	var conf config
+	conf.getConf(confPath)
 
 	// create new IRC connection
-	c := irc.SimpleClient("GoBzzzt", "bzzzt")
+	c := irc.SimpleClient(conf.Logbot.Nick, conf.Logbot.User)
 	c.EnableStateTracking()
-	c.HandleFunc("connected",
-		func(conn *irc.Conn, line *irc.Line) { conn.Join(*channel) })
+	c.HandleFunc("connected", func(conn *irc.Conn, line *irc.Line) {
+		for _, channel := range conf.Logbot.Channels {
+			fmt.Printf("Join channel %s\n", channel)
+			conn.Join(channel)
+		}
+	})
 
 	// Set up a handler to notify of disconnect events.
 	quit := make(chan bool)
@@ -44,7 +76,7 @@ func main() {
 
 	for !reallyquit {
 		// connect to server
-		if err := c.ConnectTo(*host); err != nil {
+		if err := c.ConnectTo(conf.Logbot.Server); err != nil {
 			fmt.Printf("Connection error: %s\n", err)
 			return
 		}

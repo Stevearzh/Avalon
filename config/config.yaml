@@ -1,0 +1,9 @@
+# Avalon configurations
+
+logbot:
+    nick: 'GoBzzzt'
+    user: 'bzzzt'
+    server: 'irc.freenode.net:8000'    
+    channels:
+        - '#linuxba'
+        - '#bzzzt'
