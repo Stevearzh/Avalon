@@ -2,55 +2,30 @@ package logbot
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
 	irc "github.com/fluffle/goirc/client"
-	"github.com/go-mgo/mgo"
-	"github.com/go-mgo/mgo/bson"
+	"gopkg.in/mgo.v2"
 )
 
-// Bot basic
-type Bot struct {
-	Irc struct {
-		Nick     string
-		User     string
-		Server   string
-		Channels []string
-	}
-	Mongo struct {
-		Server   string
-		User     string
-		Password string
-		AuthDb   string
-		IrcDb    string
-		TimeZone string
-	}
-}
-
-// message saved into mongodb
-type message struct {
-	ID      bson.ObjectId `bson:"_id,omitempty"`
-	Channel string        `bson:"channel"`
-	Date    string        `bson:"date"`
-	Time    string        `bson:"time"`
-	Nick    string        `bson:"nick"`
-	Message string        `bson:"message"`
-}
-
 // Run method init and run the log bot
-func (bot *Bot) Run() {
-	// init the loc to UTC+8
+func (bot *BotType) Run() {
+	// init the loc to time_zone
 	loc, _ := time.LoadLocation(bot.Mongo.TimeZone)
 
 	// login into mongodb
 	mongoSession, err := mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs:    bot.Mongo.Server,
+		Addrs:    []string{bot.Mongo.Server},
 		Timeout:  60 * time.Second,
 		Database: bot.Mongo.AuthDb,
 		Username: bot.Mongo.User,
 		Password: bot.Mongo.Password,
 	})
+	if err != nil {
+		log.Fatalf("Error connect to mongodb: %v\n", err)
+	}
 
 	// create new IRC connection
 	c := irc.SimpleClient(bot.Irc.Nick, bot.Irc.User)
@@ -66,17 +41,21 @@ func (bot *Bot) Run() {
 		channel := line.Args[0]
 		message := line.Args[1]
 		nick := line.Nick
-		time := time.Now().In(loc)
+		now := time.Now().In(loc)
 
 		if strings.HasPrefix(channel, "#") {
-			mongoCollection := mongoSession.DB(bot.Mongo.IrcDb).C(strings.Join(time.Year(), "-", time.Month()))
-			mongoCollection.Insert(&message{
+			mongoCollection := mongoSession.DB(bot.Mongo.IrcDb).C(now.Format("2006-01"))
+			err := mongoCollection.Insert(&MessageType{
 				Channel: channel,
-				Date:    string.Join(time.Year(), "-", time.Month(), "-", time.Day()),
-				Time:    string.Join(time.Hour(), ":", time.Minute(), ":", time.Second()),
+				Date:    string(now.Format("2006-01-02")),
+				Time:    string(now.Format("15:04:05")),
 				Nick:    nick,
 				Message: message,
 			})
+
+			if err != nil {
+				log.Fatalf("Error save msg into mongodb: %v\n", err)
+			}
 		} else {
 			conn.Privmsg(nick, "Sorry, this bot is for log only.")
 		}

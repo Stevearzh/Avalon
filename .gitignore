@@ -131,3 +131,11 @@ yarn-error.log*
 
 # ignore config/config.yaml
 config/config.yaml
+
+# dep
+Gopkg.lock
+Gopkg.toml
+vendor/
+
+# app
+run_bot
