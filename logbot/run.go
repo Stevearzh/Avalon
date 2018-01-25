@@ -7,7 +7,7 @@ import (
 	"time"
 
 	irc "github.com/fluffle/goirc/client"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 )
 
 // Run method init and run the log bot
@@ -63,14 +63,15 @@ func (bot *BotType) Run() {
 
 	// Set up a handler to notify of disconnect events.
 	quit := make(chan bool)
-	c.HandleFunc("disconnected",
-		func(conn *irc.Conn, line *irc.Line) { quit <- true })
+	c.HandleFunc("disconnected", func(conn *irc.Conn, line *irc.Line) {
+		log.Fatalf("Disconnect from irc server: %s\n", bot.Irc.Server)
+		quit <- true
+	})
 
 	for true {
 		// connect to server
 		if err := c.ConnectTo(bot.Irc.Server); err != nil {
 			fmt.Printf("Connection error: %s\n", err)
-			return
 		}
 
 		// wait on quit channel
