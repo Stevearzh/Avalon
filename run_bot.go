@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 
-	"./bot"
+	"github.com/Stevearzh/Avalon/logbot"
 	"gopkg.in/yaml.v2"
 )
 
