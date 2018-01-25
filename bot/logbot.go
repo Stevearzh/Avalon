@@ -2,53 +2,83 @@ package logbot
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"strings"
-
-	"gopkg.in/yaml.v2"
+	"time"
 
 	irc "github.com/fluffle/goirc/client"
+	"github.com/go-mgo/mgo"
+	"github.com/go-mgo/mgo/bson"
 )
 
-// LogBot is the log bot type
-type Bot struct{}
-
-// yaml type
-type config struct {
-	Logbot struct {
-		Nick     string   `yaml:"nick"`
-		User     string   `yaml:"user"`
-		Server   string   `yaml:"server"`
-		Channels []string `yaml:"channels"`
+// Bot basic
+type Bot struct {
+	Irc struct {
+		Nick     string
+		User     string
+		Server   string
+		Channels []string
+	}
+	Mongo struct {
+		Server   string
+		User     string
+		Password string
+		AuthDb   string
+		IrcDb    string
+		TimeZone string
 	}
 }
 
-func (c *config) getConf(path string) *config {
-	yamlFile, err := ioutil.ReadFile(path)
-	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
-	}
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
-	}
-
-	return c
+// message saved into mongodb
+type message struct {
+	ID      bson.ObjectId `bson:"_id,omitempty"`
+	Channel string        `bson:"channel"`
+	Date    string        `bson:"date"`
+	Time    string        `bson:"time"`
+	Nick    string        `bson:"nick"`
+	Message string        `bson:"message"`
 }
 
 // Run method init and run the log bot
-func (bot *Bot) Run(confPath string) {
-	var conf config
-	conf.getConf(confPath)
+func (bot *Bot) Run() {
+	// init the loc to UTC+8
+	loc, _ := time.LoadLocation(bot.Mongo.TimeZone)
+
+	// login into mongodb
+	mongoSession, err := mgo.DialWithInfo(&mgo.DialInfo{
+		Addrs:    bot.Mongo.Server,
+		Timeout:  60 * time.Second,
+		Database: bot.Mongo.AuthDb,
+		Username: bot.Mongo.User,
+		Password: bot.Mongo.Password,
+	})
 
 	// create new IRC connection
-	c := irc.SimpleClient(conf.Logbot.Nick, conf.Logbot.User)
+	c := irc.SimpleClient(bot.Irc.Nick, bot.Irc.User)
 	c.EnableStateTracking()
 	c.HandleFunc("connected", func(conn *irc.Conn, line *irc.Line) {
-		for _, channel := range conf.Logbot.Channels {
-			fmt.Printf("Join channel %s\n", channel)
+		for _, channel := range bot.Irc.Channels {
 			conn.Join(channel)
+		}
+	})
+
+	// handle privmsg
+	c.HandleFunc(irc.PRIVMSG, func(conn *irc.Conn, line *irc.Line) {
+		channel := line.Args[0]
+		message := line.Args[1]
+		nick := line.Nick
+		time := time.Now().In(loc)
+
+		if strings.HasPrefix(channel, "#") {
+			mongoCollection := mongoSession.DB(bot.Mongo.IrcDb).C(strings.Join(time.Year(), "-", time.Month()))
+			mongoCollection.Insert(&message{
+				Channel: channel,
+				Date:    string.Join(time.Year(), "-", time.Month(), "-", time.Day()),
+				Time:    string.Join(time.Hour(), ":", time.Minute(), ":", time.Second()),
+				Nick:    nick,
+				Message: message,
+			})
+		} else {
+			conn.Privmsg(nick, "Sorry, this bot is for log only.")
 		}
 	})
 
@@ -57,26 +87,9 @@ func (bot *Bot) Run(confPath string) {
 	c.HandleFunc("disconnected",
 		func(conn *irc.Conn, line *irc.Line) { quit <- true })
 
-	// handle privmsg
-	c.HandleFunc(irc.PRIVMSG, func(conn *irc.Conn, line *irc.Line) {
-		channel := line.Args[0]
-		message := line.Args[1]
-		nick := line.Nick
-		time := line.Time
-
-		if strings.HasPrefix(channel, "#") {
-			fmt.Printf("%d-%d-%d %d:%d:%d\n", time.Year(), time.Month(), time.Day(), time.Hour(), time.Minute(), time.Second())
-			fmt.Printf("%s@%s: %s\n\n", nick, channel, message)
-		} else {
-			conn.Privmsg(nick, "Sorry, this bot is for log only.")
-		}
-	})
-
-	reallyquit := false
-
-	for !reallyquit {
+	for true {
 		// connect to server
-		if err := c.ConnectTo(conf.Logbot.Server); err != nil {
+		if err := c.ConnectTo(bot.Irc.Server); err != nil {
 			fmt.Printf("Connection error: %s\n", err)
 			return
 		}

@@ -128,3 +128,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
+# ignore config/config.yaml
+config/config.yaml
