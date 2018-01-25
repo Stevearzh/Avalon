@@ -7,6 +7,7 @@ irc:
     channels:
         - '#linuxba'
         - '#bzzzt'
+    ping: 30     # every n seconds send PING to irc server
 
 mongo:
     server: 'avalon-mongo:27017'    

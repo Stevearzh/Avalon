@@ -3,16 +3,18 @@ package logbot
 import (
 	"io/ioutil"
 	"log"
+	"time"
 
 	"gopkg.in/mgo.v2/bson"
 	yaml "gopkg.in/yaml.v2"
 )
 
 type ircType struct {
-	Nick     string   `yaml:"nick"`
-	User     string   `yaml:"user"`
-	Server   string   `yaml:"server"`
-	Channels []string `yaml:"channels"`
+	Nick     string        `yaml:"nick"`
+	User     string        `yaml:"user"`
+	Server   string        `yaml:"server"`
+	Channels []string      `yaml:"channels"`
+	Ping     time.Duration `yaml:"ping"`
 }
 
 type mongoType struct {

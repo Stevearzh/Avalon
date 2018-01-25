@@ -54,18 +54,39 @@ func (bot *BotType) Run() {
 			})
 
 			if err != nil {
-				log.Fatalf("Error save msg into mongodb: %v\n", err)
+				log.Printf("Error save msg into mongodb: %v\n", err)
 			}
+
+			log.Printf("MESSAGE: %s %s: %s\n", channel, nick, message)
 		} else {
 			conn.Privmsg(nick, "Sorry, this bot is for log only.")
 		}
 	})
 
+	// setup a ticker to ping server per n seconds
+	ticker := time.NewTicker(bot.Irc.Ping * time.Second)
+	go func() {
+		for range ticker.C {
+			log.Printf("CLIENT PING")
+			c.Ping("AM I STILL ONLINE")
+		}
+	}()
+
 	// Set up a handler to notify of disconnect events.
 	quit := make(chan bool)
 	c.HandleFunc("disconnected", func(conn *irc.Conn, line *irc.Line) {
-		log.Fatalf("Disconnect from irc server: %s\n", bot.Irc.Server)
+		log.Printf("Disconnect from irc server: %s\n", bot.Irc.Server)
 		quit <- true
+	})
+
+	// print server ping log
+	c.HandleFunc(irc.PING, func(conn *irc.Conn, line *irc.Line) {
+		log.Println("SERVER PING")
+	})
+
+	// print server pong log
+	c.HandleFunc(irc.PONG, func(conn *irc.Conn, line *irc.Line) {
+		log.Println("SERVER PONG")
 	})
 
 	for true {
