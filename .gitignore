@@ -133,9 +133,9 @@ yarn-error.log*
 config/config.yaml
 
 # dep
-Gopkg.lock
-Gopkg.toml
-vendor/
+# Gopkg.lock
+# Gopkg.toml
+# vendor/
 
 # app
 run_bot
