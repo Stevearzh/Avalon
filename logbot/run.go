@@ -1,7 +1,6 @@
 package logbot
 
 import (
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -92,7 +91,7 @@ func (bot *BotType) Run() {
 	for true {
 		// connect to server
 		if err := c.ConnectTo(bot.Irc.Server); err != nil {
-			fmt.Printf("Connection error: %s\n", err)
+			log.Printf("Connection error: %s\n", err)
 		}
 
 		// wait on quit channel
