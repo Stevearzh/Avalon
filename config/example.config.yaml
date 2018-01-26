@@ -16,3 +16,11 @@ mongo:
     auth_db: 'user'
     irc_db: 'irc_logs'
     time_zone: 'Asia/Shanghai'
+
+server:
+    channels:
+        - '#linuxba'
+        - '#bzzzt'
+    port: 5556
+    public: 'public'
+    dist: 'public/dist'

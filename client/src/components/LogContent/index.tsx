@@ -31,8 +31,6 @@ interface State {
   loading: boolean;
 }
 
-const doubleIntDigit = (digit: string): string => Number(digit) < 10 ? `0${digit}` : `${digit}`;
-
 class LogContent extends React.Component<Props, State> {
   state = {
     limit: PAGE_SIZE,
@@ -48,7 +46,7 @@ class LogContent extends React.Component<Props, State> {
     const offset = 0;
     const { limit } = this.state;      
     await this.setState({ offset });      
-    this.fetchLogs(channel, date, limit, offset);    
+    this.fetchLogs(channel, date, limit, offset);
   }
 
   getDate = (date: moment.Moment): string => date.format('YYYY-MM-DD');  
@@ -58,8 +56,8 @@ class LogContent extends React.Component<Props, State> {
     this.setState({ loading: true });    
     return fetch(`/api/irc-logs?${queryString.stringify({
       year,
-      month: Number(month),
-      day: Number(day),
+      month: month,
+      day: day,
       channel, limit, offset
     })}`)
       .then((res: Response) => res.json())
@@ -90,7 +88,7 @@ class LogContent extends React.Component<Props, State> {
                   return (
                     <li key={i}>
                       <span className="time">
-                        {`${doubleIntDigit(hour)}:${doubleIntDigit(minute)}:${doubleIntDigit(second)}`}
+                        {`${hour}:${minute}:${second}`}
                       </span>
                       <p className="message">
                         <span className="nick">{log.nick}: </span>

@@ -8,9 +8,9 @@ def strip_irc_chars(string):
 def first_child(arr):
     return arr[0] if arr else None
 
-def access_db(server, port, name, table, user, pwd):
-    return pymongo.MongoClient('mongodb://%s:%s@%s:%s/%s' %
-        (user, pwd, server, port, name))[table]
+def access_db(server, user, pwd, auth_db, db):
+    return pymongo.MongoClient('mongodb://%s:%s@%s/%s' %
+        (user, pwd, server, auth_db))[db]
 
 def prev_sunday(adate):
     adate -= DT.timedelta(days=1)

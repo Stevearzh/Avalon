@@ -1,3 +1,4 @@
+import urllib.parse
 import tornado.web
 from tornado.escape import json_encode
 
@@ -41,7 +42,7 @@ def LogHandler(config):
             # get channel
             channel = ''
             str_channel = first_child(self.get_arguments('channel', True))
-            channel_dict = dict_channels(config.showed_channels)
+            channel_dict = dict_channels(config.server.channels)
 
             if str_channel in channel_dict:
                 channel = channel_dict[str_channel]
@@ -51,11 +52,12 @@ def LogHandler(config):
             # query logs
             if year and month and day and valid_date and channel:
                 # initial database
-                db = access_db(config.db_server, config.db_port, config.db_name,
-                        '%s:%s-%s' % (config.db_name, year, month),
-                        config.db_user, config.db_pwd)
+                db = access_db(config.mongo.server,
+                    urllib.parse.quote_plus(config.mongo.user),
+                    urllib.parse.quote_plus(config.mongo.password),
+                    config.mongo.auth_db, config.mongo.irc_db)
 
-                db_logs = db.my_collection.find({
+                db_logs = db['%s-%s' % (year, month)].find({
                     'channel': channel,
                     'date': '%s-%s-%s' % (year, month, day)
                 })

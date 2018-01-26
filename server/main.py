@@ -1,3 +1,4 @@
+import os
 import tornado.web
 
 from .api.channels import ChannelHandler
@@ -12,11 +13,15 @@ def RootHandler(config):
 
 def make_app(config):
     return tornado.web.Application([
-        (r'/api/channels', ChannelHandler(config.showed_channels)),
+        (r'/api/channels', ChannelHandler(config.server.channels)),
         (r'/api/times', TimesHandler(config)),
         (r'/api/irc-logs', LogHandler(config)),        
         (r'/dist/(.*)', tornado.web.StaticFileHandler, {
-        	'path': config.dist_path
+        	'path': os.path.join(os.path.dirname(__file__), config.server.dist)
         }),
         (r'/(.*)', RootHandler(config)),
-    ], **config.server_settings)
+    ], **dict(
+        debug=True,
+        static_path=os.path.join(os.path.dirname(__file__), config.server.public),
+        template_path=os.path.join(os.path.dirname(__file__), config.server.public)
+    ))
