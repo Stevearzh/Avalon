@@ -1,4 +1,5 @@
-client/config/* linguist-documentation=false
-client/scripts/* linguist-documentation=false
-config/* linguist-documentation=false
-server/public/* linguist-documentation=false
+client/config/* linguist-detectable=false
+client/scripts/* linguist-detectable=false
+config/* linguist-detectable=false
+server/public/* linguist-detectable=false
+vendor/* linguist-detectable=false
