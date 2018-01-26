@@ -1,4 +1,6 @@
-Avalon is a log bot for irc. All apps are running in docker.
+Avalon is a log system for irc.
+
+All apps are designed for running inside docker. You can try to run them outside docker yourself.
 
 ## Configuration
 You can find Avalon config file at `config` folder. Edit it for your own customize.
@@ -37,7 +39,20 @@ cd Avalon
 docker build -f logbot/Dockerfile -t avalon-logbot .
 
 # run logbot docker and join docker network
-docker run --name avalon-logbot -d -v $(pwd)/config:/avalon/config --net avalon-network avalon-logbot
+docker run --name avalon-logbot -d -v <config-path>:/go/src/github.com/Stevearzh/Avalon/config --net avalon-network avalon-logbot
+```
+
+## Server
+
+```bash
+# enter Avalon
+cd Avalon
+
+# build avalon-server
+docker build -f server/Dockerfile -t avalon-server .
+
+# run server docker and join docker network
+docker run --name avalon-server -d -v <config-path>:/avalon/config --net avalon-network -p 5556:5556 avalon-server
 ```
 
 ## Client
@@ -63,11 +78,6 @@ npm run build # or yarn build
 ```
 
 you can find the package building at `client/build`, use it to replace `server/public` when needed.
-
-
-## Server
-
-TBD.
 
 
 ## About Avalon
