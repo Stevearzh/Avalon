@@ -16,7 +16,7 @@ df = statistic.top_n_talkaholic(top_n,
     log.last_week_data(base_url, channel, bot_list, mask_dict))
 result = "Last seven days top %s talkaholic gay-law:\n" % str(top_n)
 for index, row in df.iterrows():
-    result += "%2d %15s %-d\n" % ((index + 1), row['nick'], row['times'])
+    result += "%-3d%-15s%-d\n" % ((index + 1), row['nick'], row['times'])
 
 irc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 irc_socket.connect(irc_server)
@@ -34,6 +34,9 @@ irc_socket.send(("QUIT quit\r\n").encode())
 data = irc_socket.makefile()
  
 for line in data:
-    print(line)
+    try:
+        print(line)
+    except:
+        pass
 
 print("Finished sending daily.\n")
