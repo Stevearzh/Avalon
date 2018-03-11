@@ -53,9 +53,9 @@ def last_week_data(base_url, channel, bot_list = [], mask_dict = None):
 
     for date in days_list:
         try:
-            tmp_df = add_extra(to_df(date), date)            
+            tmp_df = add_extra(to_df(date), date)
         except:
-            temp_df = pandas.DataFrame([])            
+            tmp_df = pandas.DataFrame([])
         df = db_append(df, tmp_df) if df is not None else tmp_df
 
     # strip special irc chars
