@@ -32,8 +32,5 @@ for line in result.split("\n"):
 irc_socket.send(("QUIT quit\r\n").encode())
 
 data = irc_socket.makefile()
- 
-for line in data:
-    print(line.encode().decode())
 
 print("Finished sending daily.\n")
