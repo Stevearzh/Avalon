@@ -1,13 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import 'whatwg-fetch';
-
-import registerServiceWorker from './registerServiceWorker';
-import App from './pages/App';
+import App from './App';
 import './index.css';
+import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <App/>,
+  <App />,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
