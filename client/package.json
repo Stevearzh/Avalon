@@ -3,75 +3,63 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/moment": "^2.13.0",
-    "@types/query-string": "^5.0.1",
-    "@types/react-redux": "^5.0.14",
-    "@types/react-router-dom": "^4.2.3",
-    "@types/react-router-redux": "^5.0.10",
-    "@types/react-scroll": "^1.5.2",
-    "@types/redux-actions": "^2.2.3",
-    "autoprefixer": "7.1.2",
+    "autoprefixer": "7.1.6",
+    "babel-jest": "^22.1.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-react-app": "^3.1.1",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
-    "css-loader": "0.28.4",
+    "css-loader": "0.28.7",
     "dotenv": "4.0.0",
-    "extract-text-webpack-plugin": "3.0.0",
+    "dotenv-expand": "4.2.0",
+    "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "0.11.2",
+    "fork-ts-checker-webpack-plugin": "^0.2.8",
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
-    "jest": "20.0.4",
-    "material-ui": "^1.0.0-beta.23",
-    "material-ui-icons": "^1.0.0-beta.17",
-    "material-ui-pickers": "^1.0.0-beta.7",
-    "moment": "^2.19.3",
-    "node-sass": "^4.7.2",
+    "jest": "22.4.2",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-loader": "2.0.6",
+    "postcss-loader": "2.0.8",
     "promise": "8.0.1",
-    "query-string": "^5.0.1",
-    "react": "^16.2.0",
-    "react-dev-utils": "^4.0.1",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^4.0.8",
-    "react-scroll": "^1.7.4",
-    "redux": "^3.7.2",
-    "redux-actions": "^2.2.1",
-    "redux-devtools-extension": "^2.13.2",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "sass-loader": "^6.0.6",
+    "raf": "3.4.0",
+    "react": "^16.4.1",
+    "react-dev-utils": "^5.0.1",
+    "react-dom": "^16.4.1",
+    "resolve": "1.6.0",
     "source-map-loader": "^0.2.1",
-    "style-loader": "0.18.2",
+    "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",
-    "ts-jest": "^20.0.7",
+    "ts-jest": "22.0.1",
     "ts-loader": "^2.3.7",
+    "tsconfig-paths-webpack-plugin": "^2.0.0",
     "tslint": "^5.7.0",
-    "tslint-loader": "^3.5.3",
+    "tslint-config-prettier": "^1.10.0",
     "tslint-react": "^3.2.0",
-    "typescript": "~2.5.3",
-    "url-loader": "0.5.9",
-    "webpack": "3.5.1",
-    "webpack-dev-server": "2.7.1",
-    "webpack-manifest-plugin": "1.2.1",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "url-loader": "0.6.2",
+    "webpack": "3.8.1",
+    "webpack-dev-server": "2.9.4",
+    "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "dev": "NODE_ENV=development ./node_modules/.bin/webpack --config config/webpack.config.dev.js --progress --color -w"
+    "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.8",
-    "@types/node": "^8.0.53",
-    "@types/react": "^16.0.25",
-    "@types/react-dom": "^16.0.3"
+    "@types/history": "^4.6.2",
+    "@types/jest": "^23.3.0",
+    "@types/node": "^10.5.2",
+    "@types/react": "^16.4.6",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-router": "^4.0.29",
+    "@types/react-router-dom": "^4.2.7",
+    "@types/react-router-redux": "^5.0.15",
+    "typescript": "^2.9.2"
   },
   "jest": {
-    "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}"
     ],
@@ -79,18 +67,19 @@
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
+      "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",
+      "<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.tsx?$": "<rootDir>/config/jest/typescriptTransform.js",
-      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
@@ -105,11 +94,12 @@
       "web.jsx",
       "jsx",
       "json",
-      "node"
+      "node",
+      "mjs"
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "~/Github/Avalon/client/tsconfig.test.json"
+        "tsConfigFile": "/Users/Stevearzh/go/src/github.com/Stevearzh/Avalon/client/tsconfig.test.json"
       }
     }
   },
