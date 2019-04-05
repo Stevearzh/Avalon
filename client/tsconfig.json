@@ -4,7 +4,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": ["es6", "es7", "es2017", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -17,7 +17,15 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "paths": {
+      "*": ["*"],
+      "@src/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@models/*": ["src/models/*"],
+      "@styles/*": ["src/styles/*"],
+      "@views/*": ["src/views/*"]
+    }
   },
   "exclude": [
     "node_modules",

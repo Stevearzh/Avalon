@@ -7,9 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import * as React from 'react';
 
-import './App.css';
-import logo from './logo.svg';
-
 const styles = {
   root: {
     flexGrow: 1,
@@ -41,7 +38,6 @@ class App extends React.Component<Props> {
           </AppBar>
         </div>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
