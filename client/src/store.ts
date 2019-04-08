@@ -1,18 +1,15 @@
-import createHistory from 'history/createBrowserHistory';
+import createBrowserHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import reduxThunk from 'redux-thunk';
 
 import { RootAction, rootReducer, RootState } from '@src/models';
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
-function configureStore (initialState?: RootState) {
+function configureStore(initialState?: RootState) {
   // configure middlewares
-  const middlewares = [
-    thunkMiddleware,
-    routerMiddleware(history),
-  ];
+  const middlewares = [reduxThunk, routerMiddleware(history)];
 
   // configure
   let enhancer;
@@ -21,19 +18,13 @@ function configureStore (initialState?: RootState) {
     const composeWithDevTools = require('redux-devtools-extension').composeWithDevTools;
 
     middlewares.push(createLogger());
-    enhancer = composeWithDevTools(
-      applyMiddleware(...middlewares),
-    );
+    enhancer = composeWithDevTools(applyMiddleware(...middlewares));
   } catch (error) {
     enhancer = applyMiddleware(...middlewares);
   }
 
   // create store
-  return createStore<RootState, RootAction, {}, {}>(
-    rootReducer, /* preloadedState, */
-    initialState!,
-    enhancer,
-  );
+  return createStore<RootState, RootAction, {}, {}>(rootReducer /* preloadedState, */, initialState!, enhancer);
 }
 
 // pass an optional param to rehydrate state on app start

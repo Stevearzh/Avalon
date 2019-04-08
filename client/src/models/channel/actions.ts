@@ -10,10 +10,7 @@ export const RECEIVE_LIST = 'RECEIVE_LIST';
 export const INVALID_LIST = 'INVALID_LIST';
 export const SELECT_CHANNEL = 'SELECT_CHANNEL';
 
-const {
-  requestList, receiveList,
-  selectChannel, invalidList,
-} = createActions<Payload>({
+const { requestList, receiveList, selectChannel, invalidList } = createActions<Payload>({
   [REQUEST_LIST]: () => ({
     type: REQUEST_LIST,
   }),
@@ -22,14 +19,14 @@ const {
     receivedAt: Date.now(),
     type: RECEIVE_LIST,
   }),
-  [SELECT_CHANNEL]: (selected: Selected): Payload => {    
-    if (history.location.pathname !== `/home/${cleanChannel(selected)}`) {      
+  [SELECT_CHANNEL]: (selected: Selected): Payload => {
+    if (history.location.pathname !== `/home/${cleanChannel(selected)}`) {
       history.push(`/home/${cleanChannel(selected)}`);
     }
-    return ({
+    return {
       selected,
       type: SELECT_CHANNEL,
-    });
+    };
   },
   [INVALID_LIST]: (error: Error): Payload => ({
     reason: error,
@@ -38,14 +35,14 @@ const {
 });
 
 export const actionCreators = {
+  selectChannel,
   fetchList: () => (dispatch: Dispatch) => {
     dispatch(requestList());
     return fetch('/api/channels')
       .then((res: Response) => res.json())
-      .then(json => {        
-        dispatch(receiveList(json.data.list));        
-      })      
+      .then((json: { data: { list: {} } }) => {
+        dispatch(receiveList(json.data.list));
+      })
       .catch(error => invalidList('unknown error'));
   },
-  selectChannel,
 };

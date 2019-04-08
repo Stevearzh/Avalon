@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/icons/Menu';
 import * as React from 'react';
 
 const styles = {
@@ -29,7 +29,7 @@ class App extends React.Component<Props> {
           <AppBar position="static">
             <Toolbar>
               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                <MenuIcon />
+                <Menu />
               </IconButton>
               <Typography variant="h6" color="inherit">
                 Material UI
@@ -43,7 +43,9 @@ class App extends React.Component<Props> {
         <p className="App-intro">
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <Button variant="contained" color="primary">Hello, world!</Button>
+        <Button variant="contained" color="primary">
+          Hello, world!
+        </Button>
       </div>
     );
   }
