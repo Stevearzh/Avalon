@@ -1,26 +1,73 @@
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/icons/Menu';
+import ModeComment from '@material-ui/icons/ModeComment';
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const styles = {
+import { actionCreators as channelActionCreators, State as Channel } from '@models/channel';
+import { Dispatch, RootState } from '@src/models';
+
+const styles: StyleRules = {
   'nav-bar': {
     flexGrow: 1,
+    position: 'fixed',
+    top: 0,
+    zIndex: 10,
+    width: '100%',
   },
   'menu-button': {
     marginLeft: -12,
     marginRight: 20,
   },
+  'nav-items': {
+    display: 'flex',
+    position: 'absolute',
+    top: '1em',
+    right: '2em',
+  },
 };
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<StyleRules> {}
 
-class NavBar extends React.Component<Props> {
+interface StateProps {
+  channel: Channel;
+}
+
+interface DispatchProps {
+  selectChannel: typeof channelActionCreators.selectChannel;
+  fetchChannelList: typeof channelActionCreators.fetchList;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  channel: state.channel,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
+  bindActionCreators(
+    {
+      selectChannel: channelActionCreators.selectChannel,
+      fetchChannelList: channelActionCreators.fetchList,
+    },
+    dispatch,
+  );
+
+class NavBar extends React.Component<Props & StateProps & DispatchProps> {
+  public componentDidMount() {
+    this.props.fetchChannelList();
+  }
+
+  private handleChannelChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+    this.props.selectChannel(event.target.value); // tslint:disable-line:semicolon
+
   public render() {
-    const { classes } = this.props;
+    const { classes, channel } = this.props;
 
     return (
       <div className={classes['nav-bar']}>
@@ -32,6 +79,20 @@ class NavBar extends React.Component<Props> {
             <Typography variant="h6" color="inherit">
               IRC Logs
             </Typography>
+            <Typography variant="h6" color="inherit" className={classes['nav-items']}>
+              <ModeComment />
+              <Select
+                value={(channel && channel.choosen) || ''}
+                onChange={this.handleChannelChange}
+                inputProps={{ name: 'channel', id: 'channel-select' }}
+              >
+                {((channel && channel.list) || []).map((ch: string, i: number) => (
+                  <MenuItem value={ch} key={i}>
+                    <em>{channel}</em>
+                  </MenuItem>
+                ))}
+              </Select>
+            </Typography>
           </Toolbar>
         </AppBar>
       </div>
@@ -39,4 +100,7 @@ class NavBar extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(NavBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(NavBar));
