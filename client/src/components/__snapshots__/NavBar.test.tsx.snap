@@ -1,12 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matches snapshot 1`] = `
-<NavBar
-  classes={
-    Object {
-      "menu-button": "NavBar-menu-button-2",
-      "nav-bar": "NavBar-nav-bar-1",
-    }
-  }
-/>
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
 `;

@@ -1,30 +1,22 @@
-const tsconfig = require('./tsconfig.json')
-
 module.exports = {
   globals: {
     'ts-jest': {
       tsConfig: 'tsconfig.test.json',
     },
   },
-  moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
+  "moduleDirectories": [
+    "node_modules"
   ],
-  moduleNameMapper: Object.entries(tsconfig.compilerOptions.paths)
-    .map(([key, [val]]) => [
-      key.replace(/\*/, '(.*)'),
-      `<rootDir>/${tsconfig.compilerOptions.baseUrl}/${val.replace(/\*/, '$1')}`,
-    ])
-    .reduce((obj, [k, v]) => ({ ...obj, [k]: v }), {}),
-  // preset: 'ts-jest',
-  roots: [
-    "<rootDir>/src"
-  ],
-  setupTestFrameworkScriptFile: "<rootDir>/config/setupEnzyme.ts",
+  moduleFileExtensions: ['web.ts', 'ts', 'web.tsx', 'tsx', 'web.js', 'js', 'web.jsx', 'jsx', 'mjs', 'json', 'node'],
+  moduleNameMapper: {
+    "^@src/(.*)$": "<rootDir>/src/$1",
+    "^@components/(.*)$": "<rootDir>/src/components/$1",
+    "^@models/(.*)$": "<rootDir>/src/models/$1",
+    "^@styles/(.*)$": "<rootDir>/src/styles/$1",
+    "^@views/(.*)$": "<rootDir>/src/views/1",
+  },
+  preset: 'ts-jest',
+  setupFilesAfterEnv: ["<rootDir>/config/setupEnzyme.ts"],
   snapshotSerializers: ["enzyme-to-json/serializer"],
   testEnvironment: 'node',
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
