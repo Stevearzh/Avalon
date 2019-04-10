@@ -1,4 +1,3 @@
-import { Action, handleActions } from 'redux-actions';
 import { INVALID_LIST, Payload, RECEIVE_LIST, REQUEST_LIST, SELECT_CHANNEL, State } from './';
 
 const defaultState: State = {
@@ -9,24 +8,21 @@ const defaultState: State = {
   choosen: '',
 };
 
-export const reducer = handleActions<State, Payload>(
-  {
-    [REQUEST_LIST]: (state: State, action: Action<Payload>): State => {
+export const reducer = (state: State = defaultState, action: Payload): State => {
+  switch (action.type) {
+    case REQUEST_LIST:
       return { ...state, isFetching: true, didInvalid: false };
-    },
-    [RECEIVE_LIST]: (state: State, action: Action<Payload>): State => {
-      const list = (action.payload && action.payload.list) || [];
-      const lastUpdate = (action.payload && action.payload.receivedAt) || -1;
+    case RECEIVE_LIST:
+      const list = action.list || [];
+      const lastUpdate = action.receivedAt || -1;
       return { ...state, list, lastUpdate, isFetching: false, didInvalid: false };
-    },
-    [INVALID_LIST]: (state: State, action: Action<Payload>): State => {
-      const error = (action.payload && action.payload.reason) || '';
+    case INVALID_LIST:
+      const error = action.reason || '';
       return { ...state, error, isFetching: false, didInvalid: true };
-    },
-    [SELECT_CHANNEL]: (state: State, action: Action<Payload>): State => {
-      const choosen = (action.payload && action.payload.selected) || '';
+    case SELECT_CHANNEL:
+      const choosen = action.selected || '';
       return { ...state, choosen };
-    },
-  },
-  defaultState,
-);
+    default:
+      return state;
+  }
+};

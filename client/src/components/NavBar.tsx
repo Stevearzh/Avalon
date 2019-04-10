@@ -5,6 +5,7 @@ import Select from '@material-ui/core/Select';
 import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 import Menu from '@material-ui/icons/Menu';
 import ModeComment from '@material-ui/icons/ModeComment';
 import * as React from 'react';
@@ -31,6 +32,29 @@ const styles: StyleRules = {
     position: 'absolute',
     top: '1em',
     right: '2em',
+  },
+  'select-bar': {
+    width: '8em',
+    color: 'white',
+    marginRight: '1.5em',
+    marginLeft: '0.5em',
+
+    '&:before': {
+      borderColor: 'white',
+    },
+
+    '&:hover:before': {
+      borderColor: 'white !important',
+    },
+
+    '& svg': {
+      color: 'white !important',
+      marginTop: '-3px',
+    },
+
+    '& > div > div': {
+      marginTop: '-6px',
+    },
   },
 };
 
@@ -59,8 +83,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
   );
 
 class NavBar extends React.Component<Props & StateProps & DispatchProps> {
-  public componentDidMount() {
-    this.props.fetchChannelList();
+  public async componentDidMount() {
+    await this.props.fetchChannelList();
   }
 
   private handleChannelChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
@@ -68,6 +92,7 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps> {
 
   public render() {
     const { classes, channel } = this.props;
+    const channelList = (channel && channel.list) || [];
 
     return (
       <div className={classes['nav-bar']}>
@@ -85,13 +110,15 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps> {
                 value={(channel && channel.choosen) || ''}
                 onChange={this.handleChannelChange}
                 inputProps={{ name: 'channel', id: 'channel-select' }}
+                className={classes['select-bar']}
               >
-                {((channel && channel.list) || []).map((ch: string, i: number) => (
+                {channelList.map((ch: string, i: number) => (
                   <MenuItem value={ch} key={i}>
-                    <em>{channel}</em>
+                    <em>{ch}</em>
                   </MenuItem>
                 ))}
               </Select>
+              <CalendarToday />
             </Typography>
           </Toolbar>
         </AppBar>

@@ -1,5 +1,3 @@
-import { createActions } from 'redux-actions';
-
 import { Dispatch } from '@src/models';
 import { Error, List, Payload, Time } from './';
 
@@ -8,23 +6,24 @@ export const RECEIVE_AVAILABLE_TIME = 'RECEIVE_AVAILABLE_TIME';
 export const INVALID_AVAILABLE_TIME = 'INVALID_AVAILABLE_TIME';
 export const CHANGE_CURRENT_TIME = 'CHANGE_CURRENT_TIME';
 
-const { invalidAvailableTime, receiveAvailableTime, requestAvailableTime, changeCurrentTime } = createActions<Payload>({
-  [REQUEST_AVAILABLE_TIME]: () => ({
-    type: REQUEST_AVAILABLE_TIME,
-  }),
-  [RECEIVE_AVAILABLE_TIME]: (list: List): Payload => ({
-    list,
-    receivedAt: Date.now(),
-    type: RECEIVE_AVAILABLE_TIME,
-  }),
-  [CHANGE_CURRENT_TIME]: (time: Time): Payload => ({
-    selected: time,
-    type: CHANGE_CURRENT_TIME,
-  }),
-  [INVALID_AVAILABLE_TIME]: (error: Error): Payload => ({
-    reason: error,
-    type: INVALID_AVAILABLE_TIME,
-  }),
+const requestAvailableTime = (): Payload => ({
+  type: REQUEST_AVAILABLE_TIME,
+});
+
+const receiveAvailableTime = (list: List): Payload => ({
+  list,
+  receivedAt: Date.now(),
+  type: RECEIVE_AVAILABLE_TIME,
+});
+
+const invalidAvailableTime = (error: Error): Payload => ({
+  reason: error,
+  type: INVALID_AVAILABLE_TIME,
+});
+
+const changeCurrentTime = (time: Time): Payload => ({
+  selected: time,
+  type: CHANGE_CURRENT_TIME,
 });
 
 export const actionCreators = {
@@ -33,7 +32,7 @@ export const actionCreators = {
     dispatch(requestAvailableTime());
     return fetch('/api/times')
       .then((res: Response) => res.json())
-      .then((json: { data: { list: {} } }) => {
+      .then((json: { data: { list: [] } }) => {
         dispatch(receiveAvailableTime(json.data.list));
       })
       .catch(error => invalidAvailableTime('unknown error'));
