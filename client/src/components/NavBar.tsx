@@ -8,11 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Menu from '@material-ui/icons/Menu';
 import ModeComment from '@material-ui/icons/ModeComment';
+import { DatePicker, MaterialUiPickersDate } from 'material-ui-pickers';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { actionCreators as channelActionCreators, State as Channel } from '@models/channel';
+import { actionCreators as dateActionCreators, State as DateState } from '@models/date';
 import { Dispatch, RootState } from '@src/models';
 
 const styles: StyleRules = {
@@ -56,43 +58,65 @@ const styles: StyleRules = {
       marginTop: '-6px',
     },
   },
+  'date-picker': {
+    width: '8em',
+    marginLeft: '0.5em',
+
+    '& div:before': {
+      borderColor: 'white',
+    },
+
+    '& div:hover:before': {
+      borderColor: 'white !important',
+    },
+
+    '& input': {
+      color: 'white',
+    },
+  },
 };
 
 export interface Props extends WithStyles<StyleRules> {}
 
 interface StateProps {
   channel: Channel;
+  date: DateState;
 }
 
 interface DispatchProps {
   selectChannel: typeof channelActionCreators.selectChannel;
-  fetchChannelList: typeof channelActionCreators.fetchList;
+  changeCurrentDate: typeof dateActionCreators.changeCurrentDate;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
   channel: state.channel,
+  date: state.date,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
   bindActionCreators(
     {
       selectChannel: channelActionCreators.selectChannel,
-      fetchChannelList: channelActionCreators.fetchList,
+      changeCurrentDate: dateActionCreators.changeCurrentDate,
     },
     dispatch,
   );
 
 class NavBar extends React.Component<Props & StateProps & DispatchProps> {
-  public async componentDidMount() {
-    await this.props.fetchChannelList();
-  }
-
   private handleChannelChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     this.props.selectChannel(event.target.value); // tslint:disable-line:semicolon
 
+  private handleDateChange = (date: MaterialUiPickersDate) => this.props.changeCurrentDate(date); // tslint:disable-line:semicolon
+
   public render() {
-    const { classes, channel } = this.props;
+    const { classes, channel, date } = this.props;
+
     const channelList = (channel && channel.list) || [];
+
+    const minDate = (date && date.list[0]) || new Date(0);
+    const maxDate = new Date();
+
+    const choosenDate = (date && date.choosen) || maxDate;
 
     return (
       <div className={classes['nav-bar']}>
@@ -119,6 +143,15 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps> {
                 ))}
               </Select>
               <CalendarToday />
+              <DatePicker
+                className={classes['date-picker']}
+                value={choosenDate}
+                onChange={this.handleDateChange}
+                disableFuture={true}
+                minDate={minDate}
+                maxDate={maxDate}
+                showTodayButton={true}
+              />
             </Typography>
           </Toolbar>
         </AppBar>

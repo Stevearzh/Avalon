@@ -3,17 +3,17 @@ import { combineReducers } from 'redux';
 
 import { reducer as channel } from './channel/reducer';
 import { State as ChannelState } from './channel/types';
-import { reducer as time } from './time/reducer';
-import { State as TimeState } from './time/types';
+import { reducer as date } from './date/reducer';
+import { State as TimeState } from './date/types';
 
 export interface RootState {
   router: RouterState;
   channel: ChannelState;
-  time: TimeState;
+  date: TimeState;
 }
 
 export const rootReducer = combineReducers<RootState>({
   router,
   channel,
-  time,
+  date,
 });

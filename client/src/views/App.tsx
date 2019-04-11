@@ -1,3 +1,5 @@
+import { default as DateFnsUtils } from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Router as ContainerRouter } from 'react-router-dom';
@@ -9,16 +11,18 @@ import Router from '@views/Router';
 export class App extends React.Component {
   public render() {
     return (
-      <Provider store={store}>
-        <ContainerRouter history={history}>
-          <div className="app">
-            <NavBar />
-            <div className="app-content">
-              <Router />
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Provider store={store}>
+          <ContainerRouter history={history}>
+            <div className="app">
+              <NavBar />
+              <div className="app-content">
+                <Router />
+              </div>
             </div>
-          </div>
-        </ContainerRouter>
-      </Provider>
+          </ContainerRouter>
+        </Provider>
+      </MuiPickersUtilsProvider>
     );
   }
 }
