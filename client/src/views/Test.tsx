@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-export interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {}
 
 class App extends React.Component<Props> {
   public render() {

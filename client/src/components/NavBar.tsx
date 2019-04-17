@@ -76,7 +76,7 @@ const styles: StyleRules = {
   },
 };
 
-export interface Props extends WithStyles<StyleRules> {}
+interface Props extends WithStyles<StyleRules> {}
 
 interface StateProps {
   channel: Channel;

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
+import Content from '@components/Content';
+import LogShow from '@components/LogShow';
 import { actionCreators as channelActionCreators, State as Channel } from '@models/channel';
 import { actionCreators as dateActionCreators } from '@models/date';
 import { Dispatch, RootState } from '@src/models';
@@ -50,7 +52,11 @@ class Home extends React.Component<Props & StateProps & DispatchProps> {
   }
 
   public render() {
-    return <div>Home</div>;
+    return (
+      <Content>
+        <LogShow />
+      </Content>
+    );
   }
 }
 
