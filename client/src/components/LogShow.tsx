@@ -1,6 +1,8 @@
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -11,7 +13,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { actionCreators as logActionCreators, Log, State as LogState } from '@models/log';
-import { DATE_FORMATER, DEFAULT_PAGE_SIZE } from '@src/const';
+import { DATE_FORMATER, DEFAULT_PAGE_SIZE, PAGE_SIZE_SELECTIONS } from '@src/const';
 import { Dispatch, RootState } from '@src/models';
 import { cleanChannel } from '@src/utils';
 
@@ -64,15 +66,32 @@ const styles: StyleRules = {
   },
 
   'pagination-container': {
+    width: '90%',
+    height: '36px',
+    margin: '0 auto',
     textAlign: 'center',
   },
 
   pagination: {
     display: 'inline-block',
+    float: 'right',
 
     '& button': {
       verticalAlign: 'middle',
       width: '64px',
+    },
+  },
+
+  'page-sizer': {
+    display: 'inline-block',
+    float: 'left',
+    marginLeft: '1em',
+
+    '& span': {
+      display: 'inline-block',
+      fontSize: '12px',
+      marginLeft: '1em',
+      color: '#777',
     },
   },
 };
@@ -153,6 +172,9 @@ class LogShow extends React.Component<Props & StateProps & DispatchProps, State>
 
   private handlePaginationClick = (e: React.MouseEvent, offset: number) => this.setState({ offset }, this.fetchLog); // tslint:disable-line:semicolon
 
+  private handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+    this.setState({ limit: +event.target.value }, this.fetchLog); // tslint:disable-line:semicolon
+
   public render() {
     const { classes, logs } = this.props;
     const { list, limit, offset, total } = this.state;
@@ -179,6 +201,21 @@ class LogShow extends React.Component<Props & StateProps & DispatchProps, State>
           </CardContent>
         </Card>
         <div className={classes['pagination-container']}>
+          <div className={classes['page-sizer']}>
+            <Select
+              value={limit}
+              onChange={this.handlePageSizeChange}
+              inputProps={{ name: 'pagesizer', id: 'page-sizer' }}
+              className={classes['select-bar']}
+            >
+              {PAGE_SIZE_SELECTIONS.map((ch: number) => (
+                <MenuItem value={ch} key={ch}>
+                  <em>{ch}</em>
+                </MenuItem>
+              ))}
+            </Select>
+            <span> logs per page.</span>
+          </div>
           <Pagination
             limit={limit}
             offset={offset}
