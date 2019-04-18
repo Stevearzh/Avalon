@@ -1,3 +1,6 @@
+import * as queryString from 'query-string';
+import { animateScroll as scroll } from 'react-scroll';
+
 import { Dispatch } from '@src/models';
 import { Error, List, Log, Payload } from './';
 
@@ -9,8 +12,9 @@ const requestList = (): Payload => ({
   type: REQUEST_LOG_LIST,
 });
 
-const receiveList = (list: List): Payload => ({
+const receiveList = (list: List, total: number): Payload => ({
   list,
+  total,
   receivedAt: Date.now(),
   type: RECEIVE_LOG_LIST,
 });
@@ -21,12 +25,27 @@ const invalidList = (error: Error): Payload => ({
 });
 
 export const actionCreators = {
-  fetchList: () => (dispatch: Dispatch) => {
+  fetchList: (channel: string, date: string, limit: number, offset: number) => (dispatch: Dispatch) => {
+    const [year, month, day] = date.split('-');
     dispatch(requestList());
-    return fetch('/api/channels')
+    return fetch(
+      `/api/irc-logs?${queryString.stringify({
+        year,
+        month,
+        day,
+        channel,
+        limit,
+        offset,
+      })}`,
+    )
       .then((res: Response) => res.json())
-      .then((json: { data: { list: Log[] } }) => {
-        dispatch(receiveList(json.data.list));
+      .then((json: { data: { logs: Log[]; total: number } }) => {
+        dispatch(receiveList(json.data.logs, json.data.total));
+        scroll.scrollToTop({
+          duration: 300,
+          delay: 0,
+          smooth: 'easeInOutQuart',
+        });
       })
       .catch(error => invalidList('unknown error'));
   },

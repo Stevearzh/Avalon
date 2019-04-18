@@ -1216,6 +1216,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-scroll@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@types/react-scroll/-/react-scroll-1.5.4.tgz#c151b8e5320ba90dbb0adfbdfaa0823d57571746"
+  integrity sha512-EYJt9wDvyrcDZpZqI19eb2UlAzCoXBeoFu3yMkrBDC8zkwFXOhb8lv3tD9V9UAqptora096M7qWYktsWq1guEg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-text-mask@^5.4.3":
   version "5.4.4"
   resolved "https://registry.yarnpkg.com/@types/react-text-mask/-/react-text-mask-5.4.4.tgz#eb4606e1c431b7bd2f5e817ea141432cc63b58c1"
@@ -2355,7 +2362,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -6033,6 +6040,11 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "~3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -6136,6 +6148,13 @@ map-visit@^1.0.0:
   integrity sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
   dependencies:
     object-visit "^1.0.0"
+
+material-ui-flat-pagination@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/material-ui-flat-pagination/-/material-ui-flat-pagination-3.2.0.tgz#4db75c70ef740dc0621452d39d1e1469d15527ea"
+  integrity sha512-ARxXVCYOYWTU5dXsz0OoNaBZ8bBMB2nCA4shpigB6yanIaoKIDoYB5/23hqzUJMysFgFNcbvkHRzacCQIZ4qpw==
+  dependencies:
+    classnames "^2.2.6"
 
 material-ui-pickers@2.2.4:
   version "2.2.4"
@@ -7675,7 +7694,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -7980,6 +7999,14 @@ react-router@5.0.0:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-scroll@1.7.11:
+  version "1.7.11"
+  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.7.11.tgz#0018c3a141b16a2db212086133c172bea1e63c24"
+  integrity sha512-MCWtt8KWTBzBlo9oFE7xgAhGcgbslsfQAuGZAfYlBTt3Pxi2CX+kh8OoTUVAuOwNlt9XkoWcvDTWQwtHzm2uOg==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.5.8"
 
 react-test-renderer@^16.0.0-0:
   version "16.8.6"
