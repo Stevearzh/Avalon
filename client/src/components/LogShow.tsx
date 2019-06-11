@@ -59,6 +59,7 @@ const styles: StyleRules = {
     paddingLeft: '1em',
     borderLeft: '1px solid #999',
     fontWeight: 300,
+    wordBreak: 'break-all',
   },
 
   nick: {
