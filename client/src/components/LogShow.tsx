@@ -16,6 +16,7 @@ import { actionCreators as logActionCreators, Log, State as LogState } from '@mo
 import { DATE_FORMATER, DEFAULT_PAGE_SIZE, PAGE_SIZE_SELECTIONS } from '@src/const';
 import { Dispatch, RootState } from '@src/models';
 import { cleanChannel } from '@src/utils';
+import MessageRender from './MessageRender';
 
 const styles: StyleRules = {
   'log-content': {
@@ -192,7 +193,7 @@ class LogShow extends React.Component<Props & StateProps & DispatchProps, State>
                     <span className={classes.time}>{`${hour}:${minute}:${second}`}</span>
                     <p className={classes.message}>
                       <span className={classes.nick}>{log.nick}: </span>
-                      {log.message}
+                      <MessageRender msg={log.message} />
                     </p>
                   </li>
                 );
