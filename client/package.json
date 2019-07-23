@@ -87,7 +87,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://irc-logs.tk:5556/"
+      "target": "http://dragonslayer.space:5556/"
     }
   }
 }

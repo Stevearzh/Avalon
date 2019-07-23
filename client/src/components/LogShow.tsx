@@ -3,7 +3,7 @@ import CardContent from '@material-ui/core/CardContent';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
+import { createStyles, StyleRules, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import format from 'date-fns/format';
@@ -18,85 +18,87 @@ import { Dispatch, RootState } from '@src/models';
 import { cleanChannel } from '@src/utils';
 import MessageRender from './MessageRender';
 
-const styles: StyleRules = {
-  'log-content': {
-    position: 'relative', // relative for .progress-bar
-    width: '90%',
-    margin: '0 auto 20px',
-    minHeight: '600px',
-  },
-
-  'progress-bar': {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-  },
-
-  'log-list': {
-    listStyle: 'none',
-    textAlign: 'left',
-    color: '#434343',
-    padding: '0 20px',
-
-    '& > li': {
-      display: 'flex',
-      alignItems: 'stretch',
+const styles = (theme: Theme) =>
+  createStyles({
+    'log-content': {
+      position: 'relative', // relative for .progress-bar
+      width: '90%',
+      margin: '0 auto 20px',
+      minHeight: '600px',
     },
-  },
 
-  time: {
-    display: 'inline-block',
-    fontFamily: 'monospace',
-    lineHeight: '2.5em',
-    marginRight: '1em',
-    fontSize: '14px',
-  },
-
-  message: {
-    flex: 1,
-    margin: 0,
-    lineHeight: '2em',
-    paddingLeft: '1em',
-    borderLeft: '1px solid #999',
-    fontWeight: 300,
-    wordBreak: 'break-all',
-  },
-
-  nick: {
-    fontWeight: 700,
-  },
-
-  'pagination-container': {
-    width: '90%',
-    height: '36px',
-    margin: '0 auto',
-    textAlign: 'center',
-  },
-
-  pagination: {
-    display: 'inline-block',
-    float: 'right',
-
-    '& button': {
-      verticalAlign: 'middle',
-      width: '64px',
+    'progress-bar': {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
     },
-  },
 
-  'page-sizer': {
-    display: 'inline-block',
-    float: 'left',
-    marginLeft: '1em',
+    'log-list': {
+      listStyle: 'none',
+      textAlign: 'left',
+      // color: '#434343',
+      color: theme.palette.type === 'dark' ? '#fff' : '#434343',
+      padding: '0 20px',
 
-    '& span': {
+      '& > li': {
+        display: 'flex',
+        alignItems: 'stretch',
+      },
+    },
+
+    time: {
       display: 'inline-block',
-      fontSize: '12px',
-      marginLeft: '1em',
-      color: '#777',
+      fontFamily: 'monospace',
+      lineHeight: '2.5em',
+      marginRight: '1em',
+      fontSize: '14px',
     },
-  },
-};
+
+    message: {
+      flex: 1,
+      margin: 0,
+      lineHeight: '2em',
+      paddingLeft: '1em',
+      borderLeft: '1px solid #999',
+      fontWeight: 300,
+      wordBreak: 'break-all',
+    },
+
+    nick: {
+      fontWeight: 700,
+    },
+
+    'pagination-container': {
+      width: '90%',
+      height: '36px',
+      margin: '0 auto',
+      textAlign: 'center',
+    },
+
+    pagination: {
+      display: 'inline-block',
+      float: 'right',
+
+      '& button': {
+        verticalAlign: 'middle',
+        width: '64px',
+      },
+    },
+
+    'page-sizer': {
+      display: 'inline-block',
+      float: 'left',
+      marginLeft: '1em',
+
+      '& span': {
+        display: 'inline-block',
+        fontSize: '12px',
+        marginLeft: '1em',
+        color: '#777',
+      },
+    },
+  });
 
 interface Props extends WithStyles<StyleRules> {}
 

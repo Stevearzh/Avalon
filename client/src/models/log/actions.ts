@@ -42,6 +42,7 @@ export const actionCreators = {
       .then((json: { data: { logs: Log[]; total: number } }) => {
         dispatch(receiveList(json.data.logs, json.data.total));
         scroll.scrollToTop({
+          containerId: 'app',
           duration: 300,
           delay: 0,
           smooth: 'easeInOutQuart',

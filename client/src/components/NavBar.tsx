@@ -4,6 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -64,7 +65,10 @@ const styles: StyleRules = {
   },
 };
 
-interface Props extends WithStyles<StyleRules> {}
+interface Props extends WithStyles<StyleRules> {
+  theme: 'light' | 'dark';
+  onThemeChange: () => void;
+}
 
 interface State {
   drawerOpen: boolean;
@@ -133,6 +137,14 @@ class NavBar extends React.Component<Props & StateProps & DispatchProps, State> 
             </IconButton>
             <Typography variant="h6" color="inherit">
               {channel.choosen} Logs
+            </Typography>
+            <Typography>
+              <Switch
+                checked={this.props.theme === 'dark'}
+                onChange={this.props.onThemeChange}
+                value={this.props.theme === 'dark'}
+                color="default"
+              />
             </Typography>
             <Typography variant="h6" color="inherit" className={classes['nav-items']}>
               <CalendarToday />
