@@ -52,7 +52,7 @@ cd Avalon
 docker build -f server/Dockerfile -t avalon-server .
 
 # run server docker and join docker network
-docker run --name avalon-server -d -v <config-path>:/avalon/config --net avalon-network -p 5556:5556 avalon-server
+sudo docker run -d --name=avalon-server --mount type=bind,source=<config-path>,target=/avalon/config --mount type=bind,source=<key-path>,target=/avalon/keys,readonly --net avalon-network -p 5556:5556 avalon-server
 ```
 
 ## Client

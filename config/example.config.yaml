@@ -24,6 +24,7 @@ server:
     port: 5556
     public: 'public'
     dist: 'public/dist'
+    earliest: 2018
     enable_https: false
     cert_file: '/path/to/cert_file'
     key_file: '/path/to/key_file'
