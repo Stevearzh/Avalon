@@ -5,7 +5,7 @@ import socket
 from crawler import log, statistic
 from config.mask import mask_dict
 
-base_url   = "http://poi.erhandsome.org:5556"
+base_url   = "https://dragonslayer.space:5556"
 channel    = "#linuxba"
 bot_list   = ["teleboto"]
 top_n      = 10
@@ -28,6 +28,7 @@ irc_socket.send(("JOIN %s\r\n" % channel).encode())
 for line in result.split("\n"):
     if line:
         irc_socket.send(("PRIVMSG %s : %s\r\n" % (channel, line)).encode())
+        print(line)
 
 irc_socket.send(("QUIT quit\r\n").encode())
 
