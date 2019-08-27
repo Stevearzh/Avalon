@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import tornado.httpserver
 import tornado.ioloop
 import yaml
 
@@ -18,5 +19,12 @@ with open('config/config.yaml') as f:
 config = obj(yaml.load(read_data))
 
 app = make_app(config)
+
+if config.server.enable_https:
+    app = tornado.httpserver.HTTPServer(app, ssl_options={
+        "certfile": config.server.cert_file,
+        "keyfile": config.server.key_file,
+    })
+
 app.listen(config.server.port)
 tornado.ioloop.IOLoop.current().start()
